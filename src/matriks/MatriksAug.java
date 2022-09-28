@@ -71,7 +71,7 @@ public class MatriksAug extends Matriks {
             }
             j = idxLead(i);
             // Lakukan operasi jika baris valid
-            if(j != IDX_MID && j != IDX_UNDEF){
+            if(j != IDX_RIGHTMOST && j != IDX_UNDEF){
                 // Ubah menjadi leading 1
                 if(get(i,j) != 1f)sclBaris(i, 1f/get(i,j));
                 // Eliminasi elemen kolom j di bawahnya
@@ -97,7 +97,7 @@ public class MatriksAug extends Matriks {
             }
             for(int k = i-1; k >= 0; k--){
                 // Lakukan operasi jika baris valid
-                if(j != IDX_MID && j != IDX_UNDEF){
+                if(j != IDX_RIGHTMOST && j != IDX_UNDEF){
                     // Eliminasi elemen kolom j di atasnya
                     float x = get(k,j);
                     if(x != 0f){
