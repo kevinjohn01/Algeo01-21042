@@ -243,6 +243,18 @@ public class Matriks{
         }
         return S;
     }
+    // shift -- Mengembalikan matriks dengan kolom ke-j digantikan dengan elemen matriks kolom K
+    public Matriks shift(Matriks K, int j){
+        // Tidak melakukan shift jika K bukan matriks kolom dan dimensi tidak sesuai
+        if(K.kol != 1 || bar != K.bar)return null;
+
+        Matriks S = copy();
+        // Ganti elemen kolom j dengan elemen K
+        for(int i = 0; i < bar; i++){
+            S.set(i,j, K.get(i,0));
+        }
+        return S;
+    }
     // idxLead -- Mengembalikan indeks elemen non-0 pertama di suatu baris, IDX_UNDEF jika tidak ada
     public int idxLead(int baris){
         for(int j = 0; j < kol; j++){

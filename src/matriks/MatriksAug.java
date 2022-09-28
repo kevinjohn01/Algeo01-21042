@@ -6,9 +6,15 @@ public class MatriksAug extends Matriks {
     // Konstanta pembantu
     int IDX_MID;
 
+    /* *** PROPERTI *** */
+    Matriks left, right;
+    public Matriks LEFT(){return left;}
+    public Matriks RIGHT(){return right;}
+
     /* *** KONSTRUKTOR *** */
     private MatriksAug(int baris, int kolom){
         super(baris, kolom);
+        left = null; right = null;
     }
 
     /* *** METODE *** */
@@ -18,6 +24,7 @@ public class MatriksAug extends Matriks {
         MatriksAug M = new MatriksAug(A.bar, A.kol+B.kol);
         M.IDX_MID = A.kol;
         M.each((i,j) -> M.set(i,j, j < M.IDX_MID ? A.get(i,j) : B.get(i,0)));
+        M.left = A; M.right = B;
         return M;
     }
 
@@ -120,7 +127,7 @@ public class MatriksAug extends Matriks {
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         int barNol = numBarNol();
         if(barNol > 0){
-            return new SolusiSPLBanyak(bar, barNol, this);
+            return new SolusiSPLBanyak(bar/*, barNol, this*/);
         }
         // Selain itu SPL memiliki solusi unik
         SolusiSPLUnik solusi = new SolusiSPLUnik(bar);
@@ -146,7 +153,7 @@ public class MatriksAug extends Matriks {
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         int barNol = numBarNol();
         if(barNol > 0){
-            return new SolusiSPLBanyak(bar, barNol, this);
+            return new SolusiSPLBanyak(bar/*, barNol, this*/);
         }
         // Selain itu SPL memiliki solusi unik
         SolusiSPLUnik solusi = new SolusiSPLUnik(bar);

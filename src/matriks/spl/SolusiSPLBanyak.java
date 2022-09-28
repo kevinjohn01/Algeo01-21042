@@ -7,11 +7,11 @@ public class SolusiSPLBanyak extends SolusiSPL{
     // Unimplemented
     // protected Matriks coef, var;
 
-    public SolusiSPLBanyak(int size, int numVarBebas, MatriksAug mat){
+    public SolusiSPLBanyak(int size/*, int numVarBebas, Matriks mat*/){
         super(size);
-        this.numVarBebas = numVarBebas;
+        //this.numVarBebas = numVarBebas;
 
-        init(mat);
+        //init(mat);
     }
 
     private void init(Matriks mat){

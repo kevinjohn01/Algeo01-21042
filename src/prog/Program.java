@@ -27,18 +27,14 @@ public class Program{
         }
         N.setRange(inpf);
 
-        System.out.println(M.toString());
-        System.out.println(N.toString());
-        System.out.println();
-
         MatriksAug X = MatriksAug.from(M, N);
         System.out.println(X.toString());
         System.out.println();
 
-        int OPT = Integer.parseInt(in.nextLine());
-        SolusiSPL s = OPT == 0 ? X.elimGauss() : X.elimGaussJordan();
-        System.out.println(s.toString());
-        System.out.println(X.toString());
+        SolusiSPL cramS = Cramer.cramerAug(X);
+        SolusiSPL gausS = X.elimGauss();
+        System.out.println(cramS.toString());
+        System.out.println(gausS.toString());
 
         in.close();
     }

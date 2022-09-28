@@ -1,12 +1,50 @@
 package matriks;
 
-public class Cramer {
-    public static float[] cramerAug (float[][] M) {
+import matriks.spl.*;
+
+public class Cramer{
+    public static SolusiSPL cramerAug(MatriksAug M){
+        Matriks
+            K = M.RIGHT(),
+            MI = M.LEFT();
+        // Determinan utama
+        float maindet = MI.determinant();
+
+        // Hitung nilai x0,x1,x2,...,xn
+        SolusiSPL sol = null;
+        if(maindet != 0){
+            // SPL punya solusi unik jika maindet != 0
+            sol = new SolusiSPLUnik(M.numBaris());
+        }else{
+            float koefdet = 0f;
+            for(int j = 0; j < MI.numKolom(); j++)koefdet += MI.shift(K,j).determinant();
+            if(koefdet > 0){
+                // SPL tidak punya solusi jika ada determinan non-0
+                sol = new SolusiSPLNul(M.numBaris());
+            }else{
+                // Jika MI 2x2 dan semua determinan nol, maka solusi banyak
+                // Untuk kasus MI 3x3 ke atas, inkonklusif
+                sol = MI.numBaris() >= 3 ? new SolusiSPLInkonklusif(M.numBaris()) : new SolusiSPLNul(M.numBaris());
+            }
+        }
+        // Hitung solusi unik M
+        if(sol instanceof SolusiSPLUnik){
+            for(int j = 0; j < MI.numKolom(); j++){
+                System.out.println(MI.shift(K,j));
+                float shiftdet = MI.shift(K,j).determinant();
+                if(maindet != 0){
+                    ((SolusiSPLUnik)sol).set(j, shiftdet/maindet);
+                }
+            }
+        }
+        return sol;
+    }
+    /*public static float[] cramerAug (float[][] M) {
         float[] x = new float[M.length]; //untuk menyimpan nilai x yang merupakan penyelesaian
         float[] k = new float[M.length]; // untuk menyimpan nilai konstanta
         float[][] MI = new float[M.length][M[0].length-1]; //untuk menyimpan koefisien x
         int i,j;
-        float  maindet;
+        float maindet;
 
         //copy matrix
         for (i=0; i< M.length; i++ ){
@@ -28,9 +66,19 @@ public class Cramer {
             x[j] = determinan(shiftMatrix(MI,k,j))/maindet;
         }
         return x;
+    }*/
+
+    public static SolusiSPL cramer(Matriks M, Matriks K){
+        return cramerAug(MatriksAug.from(M, K));
     }
 
-    public static float[] cramer (float[][] M, float[] k) {
+    public static SolusiSPL cramer(Matriks M, float[] arrK){
+        Matriks K = new Matriks(arrK.length, 1);
+        K.setRange(arrK);
+        return cramer(M, K);
+    }
+
+    /*public static float[] cramer (float[][] M, float[] k) {
         float[] x = new float[M.length]; //untuk menyimpan nilai x yang merupakan penyelesaian
         float[][] MI = new float[M.length][M[0].length-1]; //untuk menyimpan koefisien x
         int i,j;
@@ -51,7 +99,7 @@ public class Cramer {
             x[j] = determinan(shiftMatrix(MI,k,j))/maindet;
         }
         return x;
-    }
+    }*/
 
     public static float determinan (float[][] M) {
         int j,i, ii,l, n,count, faktorpengali;
@@ -102,7 +150,8 @@ public class Cramer {
         return det*faktorpengali;
     }
 
-    public static float[][] shiftMatrix (float[][] M, float[] k,int n) {
+    // Sudah disalin ke kelas Matriks
+    /*public static float[][] shiftMatrix (float[][] M, float[] k,int n) {
         int i, j, l;
         float[][] Mnew = new float[M.length][M[0].length];
         l=0;
@@ -125,7 +174,7 @@ public class Cramer {
         //    System.out.println();
         //}
         return Mnew;
-    }
+    }*/
 
     
 }
