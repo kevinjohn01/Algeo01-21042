@@ -10,7 +10,6 @@ public class Cramer{
         // Determinan utama
         float maindet = MI.determinant();
 
-        // Hitung nilai x0,x1,x2,...,xn
         SolusiSPL sol = null;
         if(maindet != 0){
             // SPL punya solusi unik jika maindet != 0
@@ -27,7 +26,7 @@ public class Cramer{
                 sol = MI.numBaris() >= 3 ? new SolusiSPLInkonklusif(M.numBaris()) : new SolusiSPLNul(M.numBaris());
             }
         }
-        // Hitung solusi unik M
+        // Hitung solusi unik M x0,x1,x2,...,xn
         if(sol instanceof SolusiSPLUnik){
             for(int j = 0; j < MI.numKolom(); j++){
                 System.out.println(MI.shift(K,j));
@@ -39,6 +38,7 @@ public class Cramer{
         }
         return sol;
     }
+    /// Original code
     /*public static float[] cramerAug (float[][] M) {
         float[] x = new float[M.length]; //untuk menyimpan nilai x yang merupakan penyelesaian
         float[] k = new float[M.length]; // untuk menyimpan nilai konstanta
@@ -78,6 +78,7 @@ public class Cramer{
         return cramer(M, K);
     }
 
+    /// Sudah dihandle oleh cramerAug
     /*public static float[] cramer (float[][] M, float[] k) {
         float[] x = new float[M.length]; //untuk menyimpan nilai x yang merupakan penyelesaian
         float[][] MI = new float[M.length][M[0].length-1]; //untuk menyimpan koefisien x
@@ -150,7 +151,7 @@ public class Cramer{
         return det*faktorpengali;
     }
 
-    // Sudah disalin ke kelas Matriks
+    /// Sudah disalin ke kelas Matriks
     /*public static float[][] shiftMatrix (float[][] M, float[] k,int n) {
         int i, j, l;
         float[][] Mnew = new float[M.length][M[0].length];

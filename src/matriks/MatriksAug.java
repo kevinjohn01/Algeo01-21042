@@ -17,6 +17,12 @@ public class MatriksAug extends Matriks {
         left = null; right = null;
     }
 
+    /* *** PREDIKAT *** */
+    // isMatriksSPL -- Mengembalikan true jika matriks merupakan representasi valid dari SPL
+    public boolean isMatriksSPL(){
+        return left.isSquare() && right.kol == 1;
+    }
+
     /* *** METODE *** */
     // from -- Membuat matriks augmented dengan menggabungkan dua buah matriks
     public static MatriksAug from(Matriks A, Matriks B) throws IllegalArgumentException{
