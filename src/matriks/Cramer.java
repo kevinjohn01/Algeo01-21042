@@ -38,7 +38,7 @@ public class Cramer{
         }
         return sol;
     }
-    /// Original code
+    /* Original code -- Kevin John Wesley Hutabarat */
     /*public static float[] cramerAug (float[][] M) {
         float[] x = new float[M.length]; //untuk menyimpan nilai x yang merupakan penyelesaian
         float[] k = new float[M.length]; // untuk menyimpan nilai konstanta

@@ -23,7 +23,7 @@ public class MatriksAug extends Matriks {
         return left.isSquare() && right.kol == 1;
     }
 
-    /* *** METODE *** */
+    /* *** METODE INISIALISASI *** */
     // from -- Membuat matriks augmented dengan menggabungkan dua buah matriks
     public static MatriksAug from(Matriks A, Matriks B) throws IllegalArgumentException{
         if(A.bar != B.bar)throw new IllegalArgumentException("Kolom matriks A dan B berbeda, tidak dapat membuat matriks augmented");

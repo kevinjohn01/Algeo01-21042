@@ -55,6 +55,34 @@ public class Matriks{
         IDX_RIGHTMOST = kol-1;
     }
 
+    /* *** METODE INISIALISASI *** */
+    // from -- Membuat matriks dari array satu dimensi, ukuran diinputkan
+    public static Matriks from(float[] arr, int baris, int kolom){
+        Matriks M = new Matriks(baris, kolom);
+        M.setRange(arr);
+        return M;
+    }
+    // from -- Membuat matriks dari array dua dimensi, ukuran inferred
+    public static Matriks from(float[][] arr){
+        /// Handle kasus array kosong
+        int baris = arr.length;
+        if(baris == 0)return null;
+        int kolom = arr[0].length;
+        if(kolom == 0)return null;
+        
+        Matriks M = new Matriks(baris, kolom);
+        M.each((i,j) -> M.set(i,j, arr[i][j]));
+        return M;
+    }
+    // rowMat -- Membuat matriks baris dari array satu dimensi
+    public static Matriks rowMat(float[] arr){
+        return from(arr, 1, arr.length);
+    }
+    // colMat -- Membuat matriks kolom dari array satu dimensi
+    public static Matriks colMat(float[] arr){
+        return from(arr, arr.length, 1);
+    }
+
     /* *** AKSESOR *** */
     // Aksesor dimensi matriks
     public int numBaris(){return bar;}

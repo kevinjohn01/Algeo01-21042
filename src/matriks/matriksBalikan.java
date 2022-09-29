@@ -1,6 +1,7 @@
 package matriks;
 
 public class matriksBalikan {
+    /* Original code -- Manuella Ivana Uli Sianipar */
     public static float[][] Balikan(float[][] M){
         int i,j, ii;
         float[][] MI = new float[M.length][M[0].length+M[0].length];
