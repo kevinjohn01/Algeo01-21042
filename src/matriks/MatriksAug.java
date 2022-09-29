@@ -1,6 +1,7 @@
 package matriks;
 
 import matriks.spl.*;
+import static matriks.util.Constants.*;
 
 public class MatriksAug extends Matriks {
     // Konstanta pembantu

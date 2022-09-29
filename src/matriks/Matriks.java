@@ -1,17 +1,11 @@
 package matriks;
 
 import matriks.util.*;
+import static matriks.util.Constants.*;
 
 public class Matriks implements IMatriks{
     // Konstanta pembantu
-    static int
-        IDX_UNDEF = -1;
     int IDX_RIGHTMOST;
-    
-    // Konstanta temporer untuk mencegah instansiasi ulang
-    static Matriks
-        ZERO = null,
-        IDENT = null;
     
     /* *** KONSTANTA *** */
     // zero -- Mengembalikan matriks nol, yaitu matriks di mana semua elemennya adalah 0
@@ -299,7 +293,7 @@ public class Matriks implements IMatriks{
         return c;
     }
 
-    /* *** LAINNYA *** */
+    /* *** UTILITAS *** */
     // copy -- Mengembalikan salinan dari matriks
     public Matriks copy(){
         Matriks M = new Matriks(bar, kol);
