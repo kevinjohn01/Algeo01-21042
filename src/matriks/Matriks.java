@@ -2,7 +2,7 @@ package matriks;
 
 import matriks.util.*;
 
-public class Matriks{
+public class Matriks implements IMatriks{
     // Konstanta pembantu
     static int
         IDX_UNDEF = -1;
@@ -85,8 +85,8 @@ public class Matriks{
 
     /* *** AKSESOR *** */
     // Aksesor dimensi matriks
-    public int numBaris(){return bar;}
-    public int numKolom(){return kol;}
+    public int BARIS(){return bar;}
+    public int KOLOM(){return kol;}
     
     // Aksesor elemen matriks
     public float get(int baris, int kolom) throws IndexOutOfBoundsException{
