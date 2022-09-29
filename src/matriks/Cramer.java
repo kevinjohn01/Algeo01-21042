@@ -29,7 +29,6 @@ public class Cramer{
         // Hitung solusi unik M x0,x1,x2,...,xn
         if(sol instanceof SolusiSPLUnik){
             for(int j = 0; j < MI.numKolom(); j++){
-                System.out.println(MI.shift(K,j));
                 float shiftdet = MI.shift(K,j).determinant();
                 if(maindet != 0){
                     ((SolusiSPLUnik)sol).set(j, shiftdet/maindet);

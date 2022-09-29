@@ -176,8 +176,9 @@ public class MatriksAug extends Matriks {
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < bar; i++){
             for(int j = 0; j < kol; j++){
-                str.append(" " + get(i,j));
+                str.append(get(i,j));
                 if(j == IDX_MID-1)str.append(" |");
+                if(j < kol-1)str.append(' ');
             }
             if(i < bar-1)str.append('\n');
         }
