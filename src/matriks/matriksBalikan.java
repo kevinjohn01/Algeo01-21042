@@ -74,7 +74,7 @@ public class matriksBalikan {
 
         return Mhasil;
     }
-
+/*
     public static float[] SPL(float[][] M, float[] b){
         float[] hasil = new float[M.length];
         float[][] Mbalikan = Balikan(M);
@@ -90,7 +90,7 @@ public class matriksBalikan {
 
         return hasil;
     }
-/*
+
     public static void main(String[] args){
         float M[][] = {{1,2,3},{2,5,3},{1,0,8}};
         float b[] = {5,3,1};

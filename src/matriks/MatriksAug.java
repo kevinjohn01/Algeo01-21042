@@ -1,54 +1,127 @@
 package matriks;
 
+import matriks.util.*;
 import matriks.spl.*;
+import static matriks.util.Constants.*;
 
-public class MatriksAug extends Matriks {
-    // Konstanta pembantu
-    int IDX_MID;
-
+public class MatriksAug implements IMatriks{
     /* *** PROPERTI *** */
     Matriks left, right;
+
     public Matriks LEFT(){return left;}
     public Matriks RIGHT(){return right;}
+    public int BARIS(){return left.BARIS();}
+    public int KOLOM(){return left.KOLOM() + right.KOLOM();}
+    public int IDXMID(){return left.KOLOM();}
 
     /* *** KONSTRUKTOR *** */
-    private MatriksAug(int baris, int kolom){
-        super(baris, kolom);
-        left = null; right = null;
-    }
-
-    /* *** PREDIKAT *** */
-    // isMatriksSPL -- Mengembalikan true jika matriks merupakan representasi valid dari SPL
-    public boolean isMatriksSPL(){
-        return left.isSquare() && right.kol == 1;
+    private MatriksAug(Matriks L, Matriks R){
+        left = L.copy();
+        right = R.copy();
     }
 
     /* *** METODE INISIALISASI *** */
-    // from -- Membuat matriks augmented dengan menggabungkan dua buah matriks
-    public static MatriksAug from(Matriks A, Matriks B) throws IllegalArgumentException{
-        if(A.bar != B.bar)throw new IllegalArgumentException("Kolom matriks A dan B berbeda, tidak dapat membuat matriks augmented");
-        MatriksAug M = new MatriksAug(A.bar, A.kol+B.kol);
-        M.IDX_MID = A.kol;
-        M.each((i,j) -> M.set(i,j, j < M.IDX_MID ? A.get(i,j) : B.get(i,0)));
-        M.left = A; M.right = B;
-        return M;
+    // from -- Membuat matriks augmented dari dua buah matriks
+    public static MatriksAug from(Matriks leftMat, Matriks rightMat){
+        /// Tidak membuat matriks augmented jika banyak baris kedua matriks berbeda
+        if(leftMat.BARIS() != rightMat.BARIS())return null;
+        return new MatriksAug(leftMat, rightMat);
+    }
+
+    /* *** AKSESOR *** */
+    // get -- Mengembalikan nilai elemen matriks augmented i,j
+    public float get(int i, int j){
+        return j < IDXMID() ? LEFT().get(i,j) : RIGHT().get(i,j-IDXMID());
+    }
+    // set -- Menugaskan nilai elemen matriks augmented i,j
+    public void set(int i, int j, float val){
+        if(j < IDXMID()){
+            LEFT().set(i,j,val);
+        }else{
+            RIGHT().set(i,j-IDXMID(),val);
+        }
+    }
+
+    /* *** ITERATOR *** */
+    // Iterator elemen matriks
+    public void each(MatIterator iter){
+        for(int i = 0; i < BARIS(); i++){
+            for(int j = 0; j < KOLOM(); j++){
+                iter.get(i,j);
+            }
+        }
+    }
+    // Iterator baris dan kolom matriks
+    public void barisEach(int idxBaris, MatIterator iter){
+        if(idxBaris < 0 || BARIS() <= idxBaris)return;
+        for(int i = 0; i < KOLOM(); i++){
+            iter.get(idxBaris, i);
+        }
+    }
+    public void kolomEach(int idxKolom, MatIterator iter){
+        if(idxKolom < 0 || KOLOM() <= idxKolom)return;
+        for(int i = 0; i < BARIS(); i++){
+            iter.get(i, idxKolom);
+        }
+    }
+
+    /* PREDIKAT */
+    // isMatriksSPL --  Mengembalikan true jika matriks menyatakan suatu SPL, false sebaliknya
+    public boolean isMatriksSPL(){
+        return LEFT().isSquare() && RIGHT().KOLOM() == 1;
+    }
+    // isBarisNol -- Mengembalikan true jika baris indeterminan (baris 0)
+    public boolean isBarisNol(int baris){
+        return idxLead(baris) == IDX_UNDEF;
+    }
+    // isBarisInkonsisten -- Mengembalikan true jika baris inkonsisten (ruas kiri 0, ruas kanan non-0)
+    public boolean isBarisInkonsisten(int baris){
+        return idxLead(baris) >= IDXMID();
+    }
+    // kolInkonsisten -- Mengembalikan true jika indeks kolom memenuhi kondisi inkonsistensi, INPUT ADALAH OUTPUT DARI idxLead(baris)
+    private boolean kolInkonsisten(int j){
+        return j >= IDXMID() && j != IDX_UNDEF;
+    }
+    // kolNol -- Mengembalikan true jika indeks kolom memenuhi kondisi indeterminansi, INPUT ADALAH OUTPUT DARI idxLead(baris)
+    private boolean kolNol(int j){
+        return j == IDX_UNDEF;
+    }
+    // kolValid -- Mengembalikan true jika indeks kolom memenuhi kondisi validitas, INPUT ADALAH OUTPUT DARI idxLead(baris)
+    private boolean kolValid(int j){
+        return 0 <= j && j < IDXMID();
+    }
+
+    /* *** FUNGSI *** */
+    // idxLead -- Mengembalikan indeks elemen non-0 pertama di suatu baris, IDX_UNDEF jika tidak ada
+    public int idxLead(int baris){
+        int j = LEFT().idxLead(baris);
+        if(j == IDX_UNDEF){
+            j = RIGHT().idxLead(baris);
+            if(j == IDX_UNDEF)return IDX_UNDEF;
+            return IDXMID() + j;
+        }
+        return j;
+    }
+    // numBarNol -- Mengembalikan banyak baris 0 dalam matriks augmented
+    public int numBarNol(){
+        int c = 0;
+        for(int i = 0; i < BARIS(); i++)if(isBarisNol(i))c++;
+        return c;
     }
 
     /* *** ARITMATIKA OBE *** */
-    // addBaris -- Menjumlahkan baris dengan kelipatan konstan baris lain
-    public Matriks addBaris(int baris, int toAdd, float scl){
+    // addBaris -- Menjumlahkan satu baris dengan hasil kali konstanta baris lain
+    public MatriksAug addBaris(int baris, int toAdd, float scl){
         barisEach(baris, (i,j) -> set(i,j, get(i,j) + scl * get(toAdd, j)));
         return this;
     }
-
     // sclBaris -- Mengalikan satu baris dengan suatu konstanta
-    public Matriks sclBaris(int baris, float scl){
+    public MatriksAug sclBaris(int baris, float scl){
         barisEach(baris, (i,j) -> set(i,j, scl * get(i,j)));
         return this;
     }
-
     // swapBaris -- Menukar satu baris dengan baris lainnya
-    public Matriks swapBaris(int baris, int toSwap){
+    public MatriksAug swapBaris(int baris, int toSwap){
         barisEach(baris, (i,j) -> {
             float temp = get(i,j);
             set(i,j, get(toSwap, j));
@@ -61,17 +134,15 @@ public class MatriksAug extends Matriks {
     // toRowEchelon -- Mengubah matriks menjadi bentuk row echelon, mengembalikan true jika tidak ada baris inkonsisten
     public boolean toRowEchelon(){
         boolean inconsistent = false;
-        for(int i = 0; i < bar; i++){
+        for(int i = 0; i < BARIS(); i++){
             int j = idxLead(i);
             // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-            if(!inconsistent && j == IDX_RIGHTMOST){
-                inconsistent = true;
-            }
+            inconsistent = kolInkonsisten(j);
             // Jika j != i, tukar baris dengan baris lain dengan leading elemen indeks terkecil
             if(j != i){
                 int leadBar = IDX_UNDEF;
-                j = kol;
-                for(int k = i+1; k < bar; k++){
+                j = KOLOM();
+                for(int k = i+1; k < BARIS(); k++){
                     int currLeadIdx = idxLead(k);
                     if(currLeadIdx < j){
                         leadBar = k;
@@ -84,11 +155,11 @@ public class MatriksAug extends Matriks {
             }
             j = idxLead(i);
             // Lakukan operasi jika baris valid
-            if(j != IDX_RIGHTMOST && j != IDX_UNDEF){
+            if(kolValid(j)){
                 // Ubah menjadi leading 1
                 if(get(i,j) != 1f)sclBaris(i, 1f/get(i,j));
                 // Eliminasi elemen kolom j di bawahnya
-                for(int k = i+1; k < bar; k++){
+                for(int k = i+1; k < BARIS(); k++){
                     int l = idxLead(k);
                     if(j==l){
                         addBaris(k, i, -get(k,l));
@@ -98,19 +169,16 @@ public class MatriksAug extends Matriks {
         }
         return !inconsistent;
     }
-
     // toReducedRowEchelon -- Mengubah matriks menjadi bentuk reduced row echelon, mengembalikan true jika tidak ada baris inkonsisten
     public boolean toReducedRowEchelon(){
         boolean inconsistent = !toRowEchelon();
-        for(int i = bar-1; i >= 0; i--){
+        for(int i = BARIS()-1; i >= 0; i--){
             int j = idxLead(i);
             // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-            if(!inconsistent && j == IDX_RIGHTMOST){
-                inconsistent = true;
-            }
+            inconsistent = kolInkonsisten(j);
             for(int k = i-1; k >= 0; k--){
                 // Lakukan operasi jika baris valid
-                if(j != IDX_RIGHTMOST && j != IDX_UNDEF){
+                if(kolValid(j)){
                     // Eliminasi elemen kolom j di atasnya
                     float x = get(k,j);
                     if(x != 0f){
@@ -122,25 +190,29 @@ public class MatriksAug extends Matriks {
         return !inconsistent;
     }
 
+    /* *** SPL SOLVER *** */
     // elimGauss -- Mengembalikan solusi SPL yang direpresentasikan oleh matriks ini, menggunakan metode eliminasi Gauss
     public SolusiSPL elimGauss(){
+        // Handle kasus matriks non-SPL
+        if(!isMatriksSPL())return null;
+        
         // Ubah matriks augmented menjadi bentuk row echelon
         boolean inconsistent = !toRowEchelon();
         // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
         if(inconsistent){
-            return new SolusiSPLNul(bar);
+            return new SolusiSPLNul(BARIS());
         }
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         int barNol = numBarNol();
         if(barNol > 0){
-            return new SolusiSPLBanyak(bar/*, barNol, this*/);
+            return new SolusiSPLBanyak(BARIS()/*, barNol, this*/);
         }
         // Selain itu SPL memiliki solusi unik
-        SolusiSPLUnik solusi = new SolusiSPLUnik(bar);
-        for(int i = bar-1; i >= 0; i--){
+        SolusiSPLUnik solusi = new SolusiSPLUnik(BARIS());
+        for(int i = BARIS()-1; i >= 0; i--){
             // Lakukan substitusi balik mulai dari baris terbawah
-            float val = get(i,IDX_MID);
-            for(int j = i+1; j < IDX_MID; j++){
+            float val = get(i,IDXMID());
+            for(int j = i+1; j < IDXMID(); j++){
                 val -= get(i,j) * solusi.get(j);
             }
             solusi.set(i,val);
@@ -150,23 +222,32 @@ public class MatriksAug extends Matriks {
 
     // elimGaussJordan -- Mengembalikan solusi SPL yang direpresentasikan oleh matriks ini, menggunakan metode eliminasi Gauss-Jordan
     public SolusiSPL elimGaussJordan(){
+        // Handle kasus matriks non-SPL
+        if(!isMatriksSPL())return null;
+
         // Ubah matriks augmented menjadi bentuk reduced row echelon
         boolean inconsistent = !toReducedRowEchelon();
         // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
         if(inconsistent){
-            return new SolusiSPLNul(bar);
+            return new SolusiSPLNul(BARIS());
         }
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         int barNol = numBarNol();
         if(barNol > 0){
-            return new SolusiSPLBanyak(bar/*, barNol, this*/);
+            return new SolusiSPLBanyak(BARIS()/*, barNol, this*/);
         }
         // Selain itu SPL memiliki solusi unik
-        SolusiSPLUnik solusi = new SolusiSPLUnik(bar);
-        for(int i = 0; i < bar; i++){
-            solusi.set(i, get(i,IDX_MID));
+        SolusiSPLUnik solusi = new SolusiSPLUnik(BARIS());
+        for(int i = 0; i < BARIS(); i++){
+            solusi.set(i, get(i,IDXMID()));
         }
         return solusi;
+    }
+
+    /* UTILITAS */
+    // copy -- Mengembalikan salinan dari matriks ini
+    public MatriksAug copy(){
+        return from(LEFT(), RIGHT());
     }
 
     /* *** TAMPILAN *** */
@@ -174,13 +255,13 @@ public class MatriksAug extends Matriks {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        for(int i = 0; i < bar; i++){
-            for(int j = 0; j < kol; j++){
+        for(int i = 0; i < BARIS(); i++){
+            for(int j = 0; j < KOLOM(); j++){
                 str.append(get(i,j));
-                if(j == IDX_MID-1)str.append(" |");
-                if(j < kol-1)str.append(' ');
+                if(j == IDXMID()-1)str.append(" |");
+                if(j < KOLOM()-1)str.append(' ');
             }
-            if(i < bar-1)str.append('\n');
+            if(i < BARIS()-1)str.append('\n');
         }
         return str.toString();
     }
