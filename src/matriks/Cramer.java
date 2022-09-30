@@ -72,9 +72,7 @@ public class Cramer{
     }
 
     public static SolusiSPL cramer(Matriks M, float[] arrK){
-        Matriks K = new Matriks(arrK.length, 1);
-        K.setRange(arrK);
-        return cramer(M, K);
+        return cramer(M, Matriks.colMat(arrK));
     }
 
     /// Sudah dihandle oleh cramerAug
