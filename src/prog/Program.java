@@ -2,7 +2,6 @@ package prog;
 
 import java.util.Scanner;
 import matriks.*;
-import matriks.spl.*;
 
 public class Program{
     /* *** MAIN *** */

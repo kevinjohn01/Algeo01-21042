@@ -1,6 +1,5 @@
 package matriks;
 
-import matriks.util.*;
 import matriks.spl.*;
 import static matriks.util.Constants.*;
 
