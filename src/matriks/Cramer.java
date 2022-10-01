@@ -13,22 +13,22 @@ public class Cramer{
         SolusiSPL sol = null;
         if(maindet != 0){
             // SPL punya solusi unik jika maindet != 0
-            sol = new SolusiSPLUnik(M.numBaris());
+            sol = new SolusiSPLUnik(M.BARIS());
         }else{
             float koefdet = 0f;
-            for(int j = 0; j < MI.numKolom(); j++)koefdet += MI.shift(K,j).determinant();
+            for(int j = 0; j < MI.KOLOM(); j++)koefdet += MI.shift(K,j).determinant();
             if(koefdet > 0){
                 // SPL tidak punya solusi jika ada determinan non-0
-                sol = new SolusiSPLNul(M.numBaris());
+                sol = new SolusiSPLNul(M.BARIS());
             }else{
                 // Jika MI 2x2 dan semua determinan nol, maka solusi banyak
                 // Untuk kasus MI 3x3 ke atas, inkonklusif
-                sol = MI.numBaris() >= 3 ? new SolusiSPLInkonklusif(M.numBaris()) : new SolusiSPLNul(M.numBaris());
+                sol = MI.BARIS() >= 3 ? new SolusiSPLInkonklusif(M.BARIS()) : new SolusiSPLNul(M.BARIS());
             }
         }
         // Hitung solusi unik M x0,x1,x2,...,xn
         if(sol instanceof SolusiSPLUnik){
-            for(int j = 0; j < MI.numKolom(); j++){
+            for(int j = 0; j < MI.KOLOM(); j++){
                 float shiftdet = MI.shift(K,j).determinant();
                 if(maindet != 0){
                     ((SolusiSPLUnik)sol).set(j, shiftdet/maindet);
@@ -72,9 +72,7 @@ public class Cramer{
     }
 
     public static SolusiSPL cramer(Matriks M, float[] arrK){
-        Matriks K = new Matriks(arrK.length, 1);
-        K.setRange(arrK);
-        return cramer(M, K);
+        return cramer(M, Matriks.colMat(arrK));
     }
 
     /// Sudah dihandle oleh cramerAug
