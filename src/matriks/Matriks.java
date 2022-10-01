@@ -1,5 +1,6 @@
 package matriks;
 
+import matriks.spl.*;
 import matriks.util.*;
 import static matriks.util.Constants.*;
 
@@ -10,7 +11,7 @@ public class Matriks implements IMatriks{
     /* *** KONSTANTA *** */
     // zero -- Mengembalikan matriks nol, yaitu matriks di mana semua elemennya adalah 0
     public static Matriks zero(int baris, int kolom){
-        if(ZERO == null || ZERO.bar != baris || ZERO.kol != kolom){
+        if(ZERO == null || ZERO.BARIS() != baris || ZERO.KOLOM() != kolom){
             ZERO = new Matriks(baris, kolom);
             ZERO.each((i,j) -> ZERO.set(i, j, 0f));
         }
@@ -18,7 +19,7 @@ public class Matriks implements IMatriks{
     }
     // identity -- Mengembalikan matriks identitas, yaitu matriks berelemen 1 di diagonal utama, dan 0 di tempat lainnya
     public static Matriks identity(int len){
-        if(IDENT == null || IDENT.bar != len){
+        if(IDENT == null || IDENT.BARIS() != len){
             IDENT = new Matriks(len);
             IDENT.each((i,j) -> IDENT.set(i, j, i==j ? 1f : 0f));
         }
@@ -44,9 +45,9 @@ public class Matriks implements IMatriks{
         bar = baris;
         kol = kolom;
 
-        mat = new float[bar][kol];
+        mat = new float[BARIS()][KOLOM()];
 
-        IDX_RIGHTMOST = kol-1;
+        IDX_RIGHTMOST = KOLOM()-1;
     }
 
     /* *** METODE INISIALISASI *** */
@@ -83,27 +84,19 @@ public class Matriks implements IMatriks{
     public int KOLOM(){return kol;}
     
     // Aksesor elemen matriks
-    public float get(int baris, int kolom) throws IndexOutOfBoundsException{
-        try{
-            return mat[baris][kolom];
-        }catch(IndexOutOfBoundsException e){
-            throw new IndexOutOfBoundsException("Gagal mengakses elemen matriks: Indeks di luar batas matriks");
-        }
+    public float get(int baris, int kolom){
+        return mat[baris][kolom];
     }
-    public void set(int baris, int kolom, float val) throws IndexOutOfBoundsException{
-        try{
-            mat[baris][kolom] = val;
-        }catch(IndexOutOfBoundsException e){
-            throw new IndexOutOfBoundsException("Gagal mengakses elemen matriks: Indeks di luar batas matriks");
-        }
+    public void set(int baris, int kolom, float val){
+        mat[baris][kolom] = val;
     }
     public void setRange(float... val){
         int k = 0, p = 0, q = 0;
-        while(k < val.length && k < bar * kol){
+        while(k < val.length && k < BARIS() * KOLOM()){
             set(p,q, val[k]);
             k++; q++;
-            if(q >= kol){
-                q -= kol;
+            if(q >= KOLOM()){
+                q -= KOLOM();
                 p++;
             }
         }
@@ -112,37 +105,14 @@ public class Matriks implements IMatriks{
         each((i,j) -> set(i,j, func.get(i,j)));
     }
 
-    /* *** ITERATOR *** */
-    // Iterator elemen matriks
-    public void each(MatIterator iter){
-        for(int i = 0; i < bar; i++){
-            for(int j = 0; j < kol; j++){
-                iter.get(i, j);
-            }
-        }
-    }
-    // Iterator baris dan kolom matriks
-    public void barisEach(int idxBaris, MatIterator iter){
-        if(idxBaris < 0 || bar <= idxBaris)return;
-        for(int i = 0; i < kol; i++){
-            iter.get(idxBaris, i);
-        }
-    }
-    public void kolomEach(int idxKolom, MatIterator iter){
-        if(idxKolom < 0 || kol <= idxKolom)return;
-        for(int i = 0; i < bar; i++){
-            iter.get(i, idxKolom);
-        }
-    }
-
     /* *** PREDIKAT *** */
     // isSquare -- Mengembalikan true jika matriks persegi, false sebaliknya
     public boolean isSquare(){
-        return bar == kol;
+        return BARIS() == KOLOM();
     }
     // isEquivalent -- Mengembalikan true jika dimensi kedua matriks sama, false sebaliknya
     public boolean isEquivalent(Matriks other){
-        return bar == other.bar && kol == other.kol;
+        return BARIS() == other.BARIS() && KOLOM() == other.KOLOM();
     }
     // isSingular -- Mengembalikan true jika matriks singular (tidak memiliki invers), false sebaliknya
     public boolean isSingular(){
@@ -152,30 +122,19 @@ public class Matriks implements IMatriks{
     public boolean isInvertible(){
         return isSquare() && !isSingular();
     }
-    // idxInMatriks -- Mengembalikan true jika baris dan kolom terdapat dalam matriks, false sebaliknya
-    public boolean idxInMatriks(int baris, int kolom){
-        return
-            0 <= baris && baris < bar &&
-            0 <= kolom && kolom < kol;
-    }
     // canMultiply -- Mengembalikan true jika matriks dapat mengalikan matriks other, false sebaliknya
     public boolean canMultiply(Matriks other){
-        return kol == other.bar;
+        return KOLOM() == other.BARIS();
     }
     // isRowEchelon -- Mengembalikan true jika matriks dalam bentuk eselon baris, false sebaliknya
     public boolean isRowEchelon(){
         int depth = 0;
-        for(int i = 0; i < bar; i++){
-            int leading = 0;
-            while(leading < kol && get(i, leading) == 0f)leading++;
+        for(int i = 0; i < BARIS(); i++){
+            int leading = idxLead(i);
             if(leading <= depth)return false;
             depth = leading;
         }
         return true;
-    }
-    // isBarisNol -- Mengembalikan true jika suatu baris bernilai nol, false sebaliknya
-    public boolean isBarisNol(int baris){
-        return idxLead(baris) == IDX_UNDEF;
     }
 
     /* *** ARITMATIKA *** */
@@ -202,7 +161,7 @@ public class Matriks implements IMatriks{
     // product -- Mengembalikan hasil kali dua matriks jika dimensi valid, null sebaliknya
     public Matriks product(Matriks other){
         if(!canMultiply(other))return null;
-        Matriks R = zero(bar, other.kol);
+        Matriks R = zero(BARIS(), other.KOLOM());
         R.each((i,j) ->
             barisEach(i, (a,b) -> {
                 R.set(i,j, R.get(i,j) + get(i,b) * other.get(b,j));
@@ -210,28 +169,44 @@ public class Matriks implements IMatriks{
         );
         return R;
     }
+    // diagProd -- Mengembalikan hasil kali diagonal utama matriks jika matriks persegi, NaN sebaliknya
+    public float diagProd(){
+        if(!isSquare())return Float.NaN;
+        float prod = 1f;
+        for(int i = 0; i < BARIS(); i++){
+            prod *= get(i,i);
+        }
+        return prod;
+    }
     // transpose -- Mengembalikan matriks transpose, matriks dicerminkan terhadap diagonal utama
     public Matriks transpose(){
-        Matriks T = new Matriks(kol, bar);
+        Matriks T = new Matriks(KOLOM(), BARIS());
         each((i,j) -> T.set(j,i, get(i,j)));
         return T;
     }
-    // determinant -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya
-    public float determinant(){
+    // (DEPRECATED) determinantOld -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan definisi rekursif ekspansi Laplace
+    @Deprecated
+    public float determinantOld(){
         /// BASIS: Determinan matriks satu elemen adalah elemen itu sendiri
         if(!isSquare())return Float.NaN;
-        if(bar == 1)return get(0,0);
+        if(BARIS() == 1)return get(0,0);
         /// REKURENS: Determinan matriks didefinisikan menurut ekspansi Laplace sebagai jumlah dari elemen * kofaktor sepanjang salah satu baris
         float det = 0f;
-        for(int i = 0; i < kol; i++)det += get(0, i) * cofactor(0, i);
+        for(int i = 0; i < KOLOM(); i++)det += get(0, i) * cofactor(0, i);
         return det;
+    }
+    // determinant -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan metode matriks echelon
+    public float determinant(){
+        Matriks M = copy();
+        M.toRowEchelon();
+        return M.diagProd();
     }
     // minor -- Mengembalikan minor, yaitu determinan dari suatu matriks hasil penghapusan salah satu baris dan kolom
     public float minor(int baris, int kolom){
         if(!isSquare())return Float.NaN;
-        Matriks m = new Matriks(bar-1, kol-1);
+        Matriks m = new Matriks(BARIS()-1, KOLOM()-1);
         m.each((i,j) -> m.set(i,j, get(i<baris ? i : i+1, j<kolom ? j : j+1)));
-        return m.determinant();
+        return m.determinantOld();
     }
     // cofactor -- Mengembalikan kofaktor matriks di suatu baris dan kolom
     public float cofactor(int baris, int kolom){
@@ -240,16 +215,24 @@ public class Matriks implements IMatriks{
     // adjugate -- Mengembalikan matriks adjoin (transpose dari matriks kofaktor) dari suatu matriks jika matriks persegi, null sebaliknya
     public Matriks adjugate(){
         if(!isSquare())return null;
-        Matriks A = new Matriks(bar);
+        Matriks A = new Matriks(BARIS());
         A.each((i,j) -> A.set(j,i, cofactor(i,j)));
         return A;
     }
-    // inverse -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya
-    public Matriks inverse(){
+    // (DEPRECATED) inverseOld -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya, dihitung dengan adjugat
+    @Deprecated
+    public Matriks inverseOld(){
         if(!isInvertible())return null;
         // Hitung invers sebagai 1/det * adj
         // Implementasi ini lambat, sebaiknya menggunakan metode eliminasi Gauss
         return adjugate().scale(1f / determinant());
+    }
+    // inverse -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya, dihitung dengan metode matriks augmented
+    public Matriks inverse(){
+        MatriksAug X = MatriksAug.from(copy(), identity(BARIS()));
+        SolusiSPL sol = X.elimGaussJordan();
+        if(sol instanceof SolusiSPLUnik)return X.RIGHT();
+        return null;
     }
     // getSub -- Mengembalikan submatriks dari elemen (bar1, kol1) hingga (bar2, kol2) jika bar1, bar2, kol1, kol2 valid, null sebaliknya
     public Matriks getSub(int bar1, int kol1, int bar2, int kol2){
@@ -268,18 +251,75 @@ public class Matriks implements IMatriks{
     // shift -- Mengembalikan matriks dengan kolom ke-j digantikan dengan elemen matriks kolom K
     public Matriks shift(Matriks K, int j){
         // Tidak melakukan shift jika K bukan matriks kolom dan dimensi tidak sesuai
-        if(K.kol != 1 || bar != K.bar)return null;
+        if(K.KOLOM() != 1 || BARIS() != K.BARIS())return null;
 
         Matriks S = copy();
         // Ganti elemen kolom j dengan elemen K
-        for(int i = 0; i < bar; i++){
+        for(int i = 0; i < BARIS(); i++){
             S.set(i,j, K.get(i,0));
         }
         return S;
     }
+    // toRowEchelon -- Mengubah matriks menjadi bentuk row echelon (leading tidak harus 1), mengembalikan true jika tidak ada baris inkonsisten
+    public boolean toRowEchelon(){
+        boolean singular = false;
+        for(int i = 0; i < BARIS(); i++){
+            int j = idxLead(i);
+            // Matriks singular jika ada baris nol
+            singular = j == IDX_UNDEF;
+            // Jika j != i, tukar baris dengan baris lain dengan leading elemen indeks terkecil, balik tanda untuk mempreservasi determinan
+            if(j != i){
+                int leadBar = IDX_UNDEF;
+                j = KOLOM();
+                for(int k = i+1; k < BARIS(); k++){
+                    int currLeadIdx = idxLead(k);
+                    if(currLeadIdx < j){
+                        leadBar = k;
+                        j = currLeadIdx;
+                    }
+                }
+                if(leadBar != IDX_UNDEF){
+                    swapBaris(i, leadBar);
+                    sclBaris(i, -1f);
+                }
+            }
+            j = idxLead(i);
+            // Lakukan operasi jika baris non-0
+            if(j != IDX_UNDEF){
+                // Eliminasi elemen kolom j di bawahnya
+                for(int k = i+1; k < BARIS(); k++){
+                    int l = idxLead(k);
+                    if(j==l){
+                        addBaris(k, i, -get(k,l));
+                    }
+                }
+            }
+        }
+        return !singular;
+    }
+    // toReducedRowEchelon -- Mengubah matriks menjadi bentuk reduced row echelon (leading tidak harus 1), mengembalikan true jika tidak ada baris inkonsisten
+    public boolean toReducedRowEchelon(){
+        boolean singular = !toRowEchelon();
+        for(int i = BARIS()-1; i >= 0; i--){
+            int j = idxLead(i);
+            // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
+            singular = j != IDX_UNDEF;
+            for(int k = i-1; k >= 0; k--){
+                // Lakukan operasi jika baris valid
+                if(j != IDX_UNDEF){
+                    // Eliminasi elemen kolom j di atasnya
+                    float x = get(k,j);
+                    if(x != 0f){
+                        addBaris(k, i, -x);
+                    }
+                }
+            }
+        }
+        return !singular;
+    }
     // idxLead -- Mengembalikan indeks elemen non-0 pertama di suatu baris, IDX_UNDEF jika tidak ada
     public int idxLead(int baris){
-        for(int j = 0; j < kol; j++){
+        for(int j = 0; j < KOLOM(); j++){
             if(get(baris,j) != 0f)return j;
         }
         return IDX_UNDEF;
@@ -287,7 +327,7 @@ public class Matriks implements IMatriks{
     // numBarNol -- Mengembalikan banyak baris nol dalam matriks
     public int numBarNol(){
         int c = 0;
-        for(int i = 0; i < bar; i++){
+        for(int i = 0; i < BARIS(); i++){
             if(isBarisNol(i))c++;
         }
         return c;
@@ -296,7 +336,7 @@ public class Matriks implements IMatriks{
     /* *** UTILITAS *** */
     // copy -- Mengembalikan salinan dari matriks
     public Matriks copy(){
-        Matriks M = new Matriks(bar, kol);
+        Matriks M = new Matriks(BARIS(), KOLOM());
         each((i,j) -> M.set(i,j, get(i,j)));
         return M;
     }
@@ -306,12 +346,12 @@ public class Matriks implements IMatriks{
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        for(int i = 0; i < bar; i++){
-            for(int j = 0; j < kol; j++){
+        for(int i = 0; i < BARIS(); i++){
+            for(int j = 0; j < KOLOM(); j++){
                 str.append(get(i,j));
-                if(j < kol-1)str.append(' ');
+                if(j < KOLOM()-1)str.append(' ');
             }
-            if(i < bar-1)str.append('\n');
+            if(i < BARIS()-1)str.append('\n');
         }
         return str.toString();
     }

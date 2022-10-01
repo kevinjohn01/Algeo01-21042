@@ -16,8 +16,8 @@ public class MatriksAug implements IMatriks{
 
     /* *** KONSTRUKTOR *** */
     private MatriksAug(Matriks L, Matriks R){
-        left = L.copy();
-        right = R.copy();
+        left = L;
+        right = R;
     }
 
     /* *** METODE INISIALISASI *** */
@@ -42,37 +42,10 @@ public class MatriksAug implements IMatriks{
         }
     }
 
-    /* *** ITERATOR *** */
-    // Iterator elemen matriks
-    public void each(MatIterator iter){
-        for(int i = 0; i < BARIS(); i++){
-            for(int j = 0; j < KOLOM(); j++){
-                iter.get(i,j);
-            }
-        }
-    }
-    // Iterator baris dan kolom matriks
-    public void barisEach(int idxBaris, MatIterator iter){
-        if(idxBaris < 0 || BARIS() <= idxBaris)return;
-        for(int i = 0; i < KOLOM(); i++){
-            iter.get(idxBaris, i);
-        }
-    }
-    public void kolomEach(int idxKolom, MatIterator iter){
-        if(idxKolom < 0 || KOLOM() <= idxKolom)return;
-        for(int i = 0; i < BARIS(); i++){
-            iter.get(i, idxKolom);
-        }
-    }
-
     /* PREDIKAT */
     // isMatriksSPL --  Mengembalikan true jika matriks menyatakan suatu SPL, false sebaliknya
     public boolean isMatriksSPL(){
         return LEFT().isSquare() && RIGHT().KOLOM() == 1;
-    }
-    // isBarisNol -- Mengembalikan true jika baris indeterminan (baris 0)
-    public boolean isBarisNol(int baris){
-        return idxLead(baris) == IDX_UNDEF;
     }
     // isBarisInkonsisten -- Mengembalikan true jika baris inkonsisten (ruas kiri 0, ruas kanan non-0)
     public boolean isBarisInkonsisten(int baris){
@@ -101,33 +74,6 @@ public class MatriksAug implements IMatriks{
             return IDXMID() + j;
         }
         return j;
-    }
-    // numBarNol -- Mengembalikan banyak baris 0 dalam matriks augmented
-    public int numBarNol(){
-        int c = 0;
-        for(int i = 0; i < BARIS(); i++)if(isBarisNol(i))c++;
-        return c;
-    }
-
-    /* *** ARITMATIKA OBE *** */
-    // addBaris -- Menjumlahkan satu baris dengan hasil kali konstanta baris lain
-    public MatriksAug addBaris(int baris, int toAdd, float scl){
-        barisEach(baris, (i,j) -> set(i,j, get(i,j) + scl * get(toAdd, j)));
-        return this;
-    }
-    // sclBaris -- Mengalikan satu baris dengan suatu konstanta
-    public MatriksAug sclBaris(int baris, float scl){
-        barisEach(baris, (i,j) -> set(i,j, scl * get(i,j)));
-        return this;
-    }
-    // swapBaris -- Menukar satu baris dengan baris lainnya
-    public MatriksAug swapBaris(int baris, int toSwap){
-        barisEach(baris, (i,j) -> {
-            float temp = get(i,j);
-            set(i,j, get(toSwap, j));
-            set(toSwap,j, temp);
-        });
-        return this;
     }
 
     /* *** OPERASI MATRIKS AUGMENTED *** */

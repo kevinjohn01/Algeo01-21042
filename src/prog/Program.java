@@ -27,11 +27,13 @@ public class Program{
         }
         N.setRange(inpf);
 
-        MatriksAug W = MatriksAug.from(M, N);
-        System.out.println(W.toString());
+        Matriks inv1 = M.inverseOld();
+        Matriks inv2 = M.inverse();
 
-        SolusiSPL gausW = W.elimGauss();
-        System.out.println(gausW.toString());
+        System.out.format("detold: %f%n", M.determinantOld());
+        System.out.format("detnew: %f%n", M.determinant());
+        System.out.println(inv1.toString());
+        System.out.println(inv2.toString());
 
         in.close();
     }
