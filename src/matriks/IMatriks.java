@@ -81,4 +81,9 @@ public interface IMatriks{
 
     /* *** UTILITAS *** */
     public IMatriks copy();
+    public default float[][] toArray(){
+        float[][] arr = new float[BARIS()][KOLOM()];
+        each((i,j) -> arr[i][j] = get(i,j));
+        return arr;
+    }
 }

@@ -31,6 +31,7 @@ public class Program{
         Matriks inv2 = M.inverse();
 
         System.out.format("detold: %f%n", M.determinantOld());
+        System.out.format("detcrm: %f%n", Cramer.determinan(M.toArray()));
         System.out.format("detnew: %f%n", M.determinant());
         System.out.println(inv1.toString());
         System.out.println(inv2.toString());

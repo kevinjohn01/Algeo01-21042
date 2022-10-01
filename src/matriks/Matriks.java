@@ -136,6 +136,16 @@ public class Matriks implements IMatriks{
         }
         return true;
     }
+    // isIdentity -- Mengembalikan true jika matriks adalah matriks identitas, false sebaliknya
+    public boolean isIdentity(){
+        if(!isSquare())return false;
+        for(int i = 0; i < BARIS(); i++){
+            for(int j = 0; j < KOLOM(); j++){
+                if(i==j ? get(i,j) != 1f : get(i,j) != 0f)return false;
+            }
+        }
+        return true;
+    }
 
     /* *** ARITMATIKA *** */
     // sum -- Mengembalikan jumlah dua matriks jika dimensi kedua matriks sama, null sebaliknya
@@ -225,14 +235,15 @@ public class Matriks implements IMatriks{
         if(!isInvertible())return null;
         // Hitung invers sebagai 1/det * adj
         // Implementasi ini lambat, sebaiknya menggunakan metode eliminasi Gauss
-        return adjugate().scale(1f / determinant());
+        return adjugate().scale(1f / determinantOld());
     }
     // inverse -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya, dihitung dengan metode matriks augmented
     public Matriks inverse(){
         MatriksAug X = MatriksAug.from(copy(), identity(BARIS()));
-        SolusiSPL sol = X.elimGaussJordan();
-        if(sol instanceof SolusiSPLUnik)return X.RIGHT();
+        X.toReducedRowEchelon();
+        if(X.LEFT().isIdentity())return X.RIGHT();
         return null;
+        
     }
     // getSub -- Mengembalikan submatriks dari elemen (bar1, kol1) hingga (bar2, kol2) jika bar1, bar2, kol1, kol2 valid, null sebaliknya
     public Matriks getSub(int bar1, int kol1, int bar2, int kol2){
@@ -290,7 +301,7 @@ public class Matriks implements IMatriks{
                 for(int k = i+1; k < BARIS(); k++){
                     int l = idxLead(k);
                     if(j==l){
-                        addBaris(k, i, -get(k,l));
+                        addBaris(k, i, -get(k,l)/get(i,l));
                     }
                 }
             }
@@ -308,7 +319,7 @@ public class Matriks implements IMatriks{
                 // Lakukan operasi jika baris valid
                 if(j != IDX_UNDEF){
                     // Eliminasi elemen kolom j di atasnya
-                    float x = get(k,j);
+                    float x = get(k,j)/get(i,j);
                     if(x != 0f){
                         addBaris(k, i, -x);
                     }
