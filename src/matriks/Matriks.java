@@ -2,6 +2,7 @@ package matriks;
 
 import matriks.util.*;
 import static matriks.util.Constants.*;
+import java.util.Scanner;
 
 public class Matriks implements IMatriks{
     // Konstanta pembantu
@@ -299,6 +300,27 @@ public class Matriks implements IMatriks{
         Matriks M = new Matriks(bar, kol);
         each((i,j) -> M.set(i,j, get(i,j)));
         return M;
+    }
+
+    public Matriks readMatriks(Scanner inputln){
+        // input size
+        String line = inputln.nextLine();
+        String[] line_arr = line.split("\\s+");
+        int SIZE_bar = Integer.parseInt(line_arr[0]);
+        int SIZE_col = Integer.parseInt(line_arr[1]);
+
+        // inisialisasi matriks
+        Matriks m = new Matriks(SIZE_bar,SIZE_col);
+
+        // input nilai matriks
+        for(int i = 0; i < SIZE_bar; i++){
+            line = inputln.nextLine();
+            line_arr = line.split("\\s+");
+            for(int j = 0; j < SIZE_col; j++){
+                m.set(i,j, Float.parseFloat(line_arr[j]));
+            }
+        }
+        return m;
     }
 
     /* *** TAMPILAN *** */
