@@ -30,9 +30,9 @@ public class Program{
         Matriks inv1 = M.inverseOld();
         Matriks inv2 = M.inverse();
 
-        System.out.format("detold: %f%n", M.determinantOld());
+        System.out.format("detexp: %f%n", M.determinantWExp());
         System.out.format("detcrm: %f%n", Cramer.determinan(M.toArray()));
-        System.out.format("detnew: %f%n", M.determinant());
+        System.out.format("detred: %f%n", M.determinantWRed());
         System.out.println(inv1.toString());
         System.out.println(inv2.toString());
 

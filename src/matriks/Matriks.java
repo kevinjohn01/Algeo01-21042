@@ -194,57 +194,6 @@ public class Matriks implements IMatriks{
         each((i,j) -> T.set(j,i, get(i,j)));
         return T;
     }
-    // (DEPRECATED) determinantOld -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan definisi rekursif ekspansi Laplace
-    @Deprecated
-    public float determinantOld(){
-        /// BASIS: Determinan matriks satu elemen adalah elemen itu sendiri
-        if(!isSquare())return Float.NaN;
-        if(BARIS() == 1)return get(0,0);
-        /// REKURENS: Determinan matriks didefinisikan menurut ekspansi Laplace sebagai jumlah dari elemen * kofaktor sepanjang salah satu baris
-        float det = 0f;
-        for(int i = 0; i < KOLOM(); i++)det += get(0, i) * cofactor(0, i);
-        return det;
-    }
-    // determinant -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan metode matriks echelon
-    public float determinant(){
-        Matriks M = copy();
-        M.toRowEchelon();
-        return M.diagProd();
-    }
-    // minor -- Mengembalikan minor, yaitu determinan dari suatu matriks hasil penghapusan salah satu baris dan kolom
-    public float minor(int baris, int kolom){
-        if(!isSquare())return Float.NaN;
-        Matriks m = new Matriks(BARIS()-1, KOLOM()-1);
-        m.each((i,j) -> m.set(i,j, get(i<baris ? i : i+1, j<kolom ? j : j+1)));
-        return m.determinantOld();
-    }
-    // cofactor -- Mengembalikan kofaktor matriks di suatu baris dan kolom
-    public float cofactor(int baris, int kolom){
-        return (float)Math.pow(-1f, baris+kolom) * minor(baris, kolom);
-    }
-    // adjugate -- Mengembalikan matriks adjoin (transpose dari matriks kofaktor) dari suatu matriks jika matriks persegi, null sebaliknya
-    public Matriks adjugate(){
-        if(!isSquare())return null;
-        Matriks A = new Matriks(BARIS());
-        A.each((i,j) -> A.set(j,i, cofactor(i,j)));
-        return A;
-    }
-    // (DEPRECATED) inverseOld -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya, dihitung dengan adjugat
-    @Deprecated
-    public Matriks inverseOld(){
-        if(!isInvertible())return null;
-        // Hitung invers sebagai 1/det * adj
-        // Implementasi ini lambat, sebaiknya menggunakan metode eliminasi Gauss
-        return adjugate().scale(1f / determinantOld());
-    }
-    // inverse -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya, dihitung dengan metode matriks augmented
-    public Matriks inverse(){
-        MatriksAug X = MatriksAug.from(copy(), identity(BARIS()));
-        X.toReducedRowEchelon();
-        if(X.LEFT().isIdentity())return X.RIGHT();
-        return null;
-        
-    }
     // getSub -- Mengembalikan submatriks dari elemen (bar1, kol1) hingga (bar2, kol2) jika bar1, bar2, kol1, kol2 valid, null sebaliknya
     public Matriks getSub(int bar1, int kol1, int bar2, int kol2){
         if(!idxInMatriks(bar1, kol1) || !idxInMatriks(bar2, kol2))return null;
@@ -344,6 +293,67 @@ public class Matriks implements IMatriks{
         return c;
     }
 
+    /* *** DETERMINAN *** */
+    // determinant -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan metode default yang ditentukan
+    public float determinant(){
+        return determinantWRed();
+    }
+    // determinantWExp -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan definisi rekursif ekspansi Laplace
+    public float determinantWExp(){
+        /// BASIS: Determinan matriks satu elemen adalah elemen itu sendiri
+        if(!isSquare())return Float.NaN;
+        if(BARIS() == 1)return get(0,0);
+        /// REKURENS: Determinan matriks didefinisikan menurut ekspansi Laplace sebagai jumlah dari elemen * kofaktor sepanjang salah satu baris
+        float det = 0f;
+        for(int i = 0; i < KOLOM(); i++)det += get(0, i) * cofactor(0, i);
+        return det;
+    }
+    // determinantWRed -- Mengembalikan nilai determinan matriks jika matriks persegi, NaN sebaliknya, menggunakan metode reduksi baris
+    public float determinantWRed(){
+        Matriks M = copy();
+        M.toRowEchelon();
+        return M.diagProd();
+    }
+    // minor -- Mengembalikan minor, yaitu determinan dari suatu matriks hasil penghapusan salah satu baris dan kolom
+    public float minor(int baris, int kolom){
+        if(!isSquare())return Float.NaN;
+        Matriks m = new Matriks(BARIS()-1, KOLOM()-1);
+        m.each((i,j) -> m.set(i,j, get(i<baris ? i : i+1, j<kolom ? j : j+1)));
+        return m.determinantWExp();
+    }
+    // cofactor -- Mengembalikan kofaktor matriks di suatu baris dan kolom
+    public float cofactor(int baris, int kolom){
+        return (float)Math.pow(-1f, baris+kolom) * minor(baris, kolom);
+    }
+    // adjugate -- Mengembalikan matriks adjoin (transpose dari matriks kofaktor) dari suatu matriks jika matriks persegi, null sebaliknya
+    public Matriks adjugate(){
+        if(!isSquare())return null;
+        Matriks A = new Matriks(BARIS());
+        A.each((i,j) -> A.set(j,i, cofactor(i,j)));
+        return A;
+    }
+
+    /* *** INVERS *** */
+    // inverse -- Mengembalikan invers dari suatu matriks jika matriks memiliki invers, null sebaliknya, dihitung dengan metode default yang ditentukan
+    public Matriks inverse(){
+        return inverseWRed();
+    }
+    // inverseWAdj -- Mengembalikan invers dari suatu matriks jika matriks memiliki invers, null sebaliknya, dihitung dengan matriks adjugat
+    public Matriks inverseWAdj(){
+        if(!isInvertible())return null;
+        // Hitung invers sebagai 1/det * adj
+        // Implementasi ini lambat, sebaiknya menggunakan metode eliminasi Gauss
+        return adjugate().scale(1f / determinantWExp());
+    }
+    // inverseWReduct -- Mengembalikan invers dari suatu matriks jika matriks dapat diinvers, null sebaliknya, dihitung dengan metode reduksi baris
+    public Matriks inverseWRed(){
+        MatriksAug X = MatriksAug.from(copy(), identity(BARIS()));
+        X.toReducedRowEchelon();
+        if(X.LEFT().isIdentity())return X.RIGHT();
+        return null;
+        
+    }
+
     /* *** UTILITAS *** */
     // copy -- Mengembalikan salinan dari matriks
     public Matriks copy(){
@@ -351,8 +361,6 @@ public class Matriks implements IMatriks{
         each((i,j) -> M.set(i,j, get(i,j)));
         return M;
     }
-
-    /* *** TAMPILAN *** */
     // toString -- Mengembalikan representasi string dari matriks
     @Override
     public String toString() {
