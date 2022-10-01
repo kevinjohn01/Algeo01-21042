@@ -2,7 +2,6 @@ package prog;
 
 import java.util.Scanner;
 import matriks.*;
-import matriks.spl.*;
 
 public class Program{
     /* *** MAIN *** */
@@ -126,11 +125,11 @@ public class Program{
         }
         N.setRange(inpf);
 
-        MatriksAug W = MatriksAug.from(M, N);
-        System.out.println(W.toString());
-
-        SolusiSPL gausW = W.elimGauss();
-        System.out.println(gausW.toString());
+        System.out.format("detexp: %f%n", M.determinantWExp());
+        System.out.format("detcrm: %f%n", Cramer.determinan(M.toArray()));
+        System.out.format("detred: %f%n", M.determinantWRed());
+        System.out.println(M.inverseWAdj().toString());
+        System.out.println(M.inverseWRed().toString());
 
         in.close();
         */
