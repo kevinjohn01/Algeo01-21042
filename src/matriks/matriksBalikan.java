@@ -2,25 +2,33 @@ package matriks;
 
 public class matriksBalikan {
     /* Original code -- Manuella Ivana Uli Sianipar */
-    public static float[][] Balikan(float[][] M){
+    public static Matriks Balikan(Matriks M){
         int i,j, ii;
-        float[][] MI = new float[M.length][M[0].length+M[0].length];
-
+        // Matriks MI = new Matriks(M.length,M[0].length+M[0].length);
         // copy matriks awal
-        for(i = 0; i < M.length; i++){
+        /*for(i = 0; i < M.length; i++){
             for(j = 0; j < M[i].length; j++){
                 MI[i][j] = M[i][j];
             }
         }
+        */
+        Matriks MI = new Matriks(2*M.bar, 2*M.kol);
+
+        // input nilai matriks awal
+        for(i = 0; i < M.bar; i++){
+            for(j = 0; j < M.kol; j++){
+                MI.set(i,j,M.get(1,j));
+            }
+        }
 
         // tambah matriks identitas di kanan matriks
-        for(i = 0; i < M.length; i++){
-            for(j = M.length; j < MI[i].length; j++){
-                if (i == (j-M.length)){
-                    MI[i][j] = 1;              
+        for(i = 0; i < M.bar; i++){
+            for(j = M.kol; j < MI.kol; j++){
+                if (i == (j-M.bar)){
+                    MI.set(i,j,1);              
                 }
                 else
-                    MI[i][j] = 0;
+                    MI.set(i,j,0);
             }
         }
 
@@ -28,47 +36,47 @@ public class matriksBalikan {
 
         // membuat matriks segitiga atas
         float r;
-        for(i = 0; i < MI.length; i++){
+        for(i = 0; i < MI.bar; i++){
             // looping elemen di bawah MI[i][i] menjadi 0
-            for(ii = i + 1; ii < MI.length; ii++){
-                r = MI[ii][i]/MI[i][i];
-                for(j = 0; j < MI[ii].length; j++){
-                    MI[ii][j] = MI[ii][j] - r*MI[i][j];
+            for(ii = i + 1; ii < MI.bar; ii++){
+                r = MI.get(ii,i)/MI.get(i,i);
+                for(j = 0; j < MI.kol; j++){
+                    MI.set(ii,j,MI.get(ii,j) - r*MI.get(i,j));
                 }
             }
         }
 
         float x;
         // menjadikan elemen diagonal menjadi 1
-        for(i = 0; i < MI.length; i++){
-            if (MI[i][i] != 1){
-                x = MI[i][i];
-                for(j = 0; j < MI[i].length; j++){
-                    MI[i][j] = MI[i][j]/x; 
-                    if (MI[i][j] == -0.0){
-                        MI[i][j] = 0; // biar -0 jadi 0 (?)
+        for(i = 0; i < MI.bar; i++){
+            if (MI.get(i,i) != 1){
+                x = MI.get(i,i);
+                for(j = 0; j < MI.kol; j++){
+                    MI.set(i,j,MI.get(i,j)/x); 
+                    if (MI.get(i,j) == -0.0){
+                        MI.set(i,j,0); // biar -0 jadi 0 (?)
                     }
                 }
             }
         }
 
         // menjadikan elemen selain diagonal menjadi 0
-        for(i = MI.length-1; i >= 0; i--){
+        for(i = MI.bar-1; i >= 0; i--){
             // looping elemen di atas MI[i][i] menjadi 0
             for(ii = i - 1; ii >= 0; ii--){
-                r = MI[ii][i]/MI[i][i];
-                for(j = 0; j < MI[ii].length; j++){
-                    MI[ii][j] = MI[ii][j] - r*MI[i][j];
+                r = MI.get(ii,i)/MI.get(i,i);
+                for(j = 0; j < MI.kol; j++){
+                    MI.set(ii,j,MI.get(ii,j) - r*MI.get(i,j));
                 }
             }
         }
 
         // simpan matriks baru
-        float[][] Mhasil = new float[M.length][M[0].length];
+        Matriks Mhasil = new Matriks(M.bar,M.kol);
 
-        for(i = 0; i < MI.length; i++){
-            for(j = 0; j < M[0].length; j++){
-                Mhasil[i][j] = MI[i][j + M.length];
+        for(i = 0; i < MI.bar; i++){
+            for(j = 0; j < M.kol; j++){
+                Mhasil.set(i,j,MI.get(i,j + M.bar));
             }
         }
 

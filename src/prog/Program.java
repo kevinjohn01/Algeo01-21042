@@ -100,6 +100,7 @@ public class Program{
                 exit = true;
             }
 
+            input_menu.close();
         }
 
 
