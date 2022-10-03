@@ -8,6 +8,7 @@ public class Program{
     public static void main(String[] args){
         boolean exit = false;
         Scanner input_menu = new Scanner(System.in);
+        Scanner f,in;
 
         while(!exit){
             // menu utama
@@ -39,16 +40,16 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        Scanner f = new Scanner(System.in);
+                        f = new Scanner(System.in);
                         String filename = f.nextLine();
                         menu1.ElimGaussFile(filename);
                         f.close();
                     }
                     else{ // 2. Terminal
-                        Scanner inp = new Scanner(System.in);
-                        Matriks M = Matriks.readMatriks(inp);
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
                         menu1.ElimGaussTerm(M);
-                        inp.close();}
+                        in.close();}
 
                 }
 
@@ -60,11 +61,18 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu1.ElimGaussJordanFile(filename);
+                        f.close();
                     }
                     else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu1.ElimGaussJordanTerm(M);
+                        in.close();}
 
-                        
+
                 }
 
                 else if (inp == 3){ // 3. Metode matriks balikan
@@ -75,10 +83,16 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu1.MatriksBalikanFile(filename);
+                        f.close();
                     }
-                    else // 2. Terminal
-
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu1.MatriksBalikanTerm(M);
+                        in.close();}
 
                 }
                 
@@ -90,13 +104,18 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu1.KaidahCramerFile(filename);
+                        f.close();
                     }
-                    else // 2. Terminal
-
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu1.KaidahCramerTerm(M);
+                        in.close();}
                 }
 
-            }
 
             else if (inp == 2){ // 2. Determinan
                 // pilih submenu
@@ -115,9 +134,16 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu2.ReduksiBarisFile(filename);
+                        f.close();
                     }
-                    else // 2. Terminal
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu2.ReduksiBarisTerm(M);
+                        in.close();}
 
                 }
 
@@ -129,9 +155,16 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu2.EkspansiFile(filename);
+                        f.close();
                     }
-                    else // 2. Terminal
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu2.EkspansiTerm(M);
+                        in.close();}
 
                 }
             }
@@ -153,9 +186,16 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu3.ReduksiBarisFile(filename);
+                        f.close();
                     }
-                    else // 2. Terminal
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu3.ReduksiBarisTerm(M);
+                        in.close();}
 
                 }
                 else if (inp == 2){ // 2. Metode adjoin
@@ -166,24 +206,31 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        f = new Scanner(System.in);
+                        String filename = f.nextLine();
+                        menu3.AdjoinFile(filename);
+                        f.close();
                     }
-                    else // 2. Terminal
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu3.AdjoinTerm(M);
+                        in.close();}
 
                 }
             }
 
             else if (inp == 4){ // 4. Interpolasi Polinom
                 System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                inp = Integer.parseInt(input_menu.nextLine());
+                while(!(inp == 1 || inp == 2)){
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
                     inp = Integer.parseInt(input_menu.nextLine());
-                    while(!(inp == 1 || inp == 2)){
-                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
-                        inp = Integer.parseInt(input_menu.nextLine());
-                    }
-                    if (inp == 1){ // 1. File
+                }
+                if (inp == 1){ // 1. File
 
-                    }
-                    else // 2. Terminal
+                }
+                else{} // 2. Terminal
 
             }
 
@@ -197,7 +244,7 @@ public class Program{
                     if (inp == 1){ // 1. File
 
                     }
-                    else // 2. Terminal
+                    else{} // 2. Terminal
 
             }
 
@@ -211,7 +258,7 @@ public class Program{
                     if (inp == 1){ // 1. File
 
                     }
-                    else // 2. Terminal
+                    else{} // 2. Terminal
 
             }
 
@@ -254,4 +301,5 @@ public class Program{
         in.close();
         */
     }
+}
 }
