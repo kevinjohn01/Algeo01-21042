@@ -32,20 +32,40 @@ public class Program{
                 }
 
                 if (inp == 1){ // 1. Metode Eliminasi Gauss
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
 
                 else if (inp == 2){ // 2. Metode Eliminasi Gauss-Jordan
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
 
                 else if (inp == 3){ // 3. Metode matriks balikan
-                    
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
 
                 }
                 
                 else if (inp == 4){ // 4. Kaidah Cramer
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
 
             }
@@ -60,11 +80,21 @@ public class Program{
                 }
 
                 if (inp == 1){ // 1. Metode reduksi baris
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
 
                 else if (inp == 2){ // 2. Metode Ekspansi Kofaktor
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
             }
 
@@ -78,23 +108,48 @@ public class Program{
                 }
 
                 if (inp == 1){ // 1. Metode reduksi baris
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
                 else if (inp == 2){ // 2. Metode adjoin
-
+                    System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
                 }
             }
 
             else if (inp == 4){ // 4. Interpolasi Polinom
-
+                System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
             }
 
             else if (inp == 5){ // 5. Interpolasi Bicubic
-
+                System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
             }
 
             else if (inp == 6){ // 6. Regresi Linier Berganda
-
+                System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                    inp = Integer.parseInt(input_menu.nextLine());
+                    while(!(inp == 1 || inp == 2)){
+                        System.out.println("Pilih masukan\n1. File\n2. Terminal");
+                        inp = Integer.parseInt(input_menu.nextLine());
+                    }
             }
 
             else if (inp == 7){ // 7. Keluar
