@@ -1,7 +1,7 @@
 package matriks;
 import java.util.Scanner;
 
-public class MatriksBalikan{
+public class matriksBalikan{
     /* Original code -- Manuella Ivana Uli Sianipar */
     public static Matriks Balikan(Matriks M){
         int i,j, ii;
