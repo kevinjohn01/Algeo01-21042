@@ -1,6 +1,7 @@
 package matriks.spl;
 
 import matriks.*;
+import static matriks.util.Constants.*;
 import static matriks.util.Format.*;
 
 public class SolusiSPLBanyak extends SolusiSPL{
@@ -17,6 +18,47 @@ public class SolusiSPLBanyak extends SolusiSPL{
         // agar persamaan hanya dinyatakan dalam parameter-parameternya
         mat.toReducedRowEchelon();
 
+        // Variabel bebas adalah [x_a, x_b, ...] di mana a,b,... adalah indeks kolom nol
+        numVarBebas = 0;
+        boolean[] isVarBebas = new boolean[mat.IDXMID()];
+        for(int i = 0; i < mat.BARIS(); i++){
+            isVarBebas[i] = true;
+            for(int k = 0; k < mat.BARIS(); k++){
+                int lead = mat.LEFT().idxLead(k);
+                if(lead == i){
+                    isVarBebas[i] = false;
+                }
+                if(lead > i)break;
+            }
+            if(isVarBebas[i])numVarBebas++;
+        }
+
+        // Inisialisasi matriks buffer
+        coef = new Matriks(mat.BARIS(), numVarBebas);
+        konst = mat.RIGHT();
+        int[] kolVarBebas = new int[numVarBebas];
+        int idx = 0;
+        for(int i = 0; i < isVarBebas.length; i++){
+            if(isVarBebas[i]){
+                kolVarBebas[idx++] = i;
+            }
+        }
+
+        // Koefisien parameter diambil dari baris matriks
+        int iVarBebas = 0;
+        for(int i = 0; i < mat.BARIS(); i++){
+            if(isVarBebas[i]){
+                // Kasus variabel bebas
+                coef.set(i, iVarBebas++, -1f);
+            }else{
+                // Kasus variabel terikat parameter
+                for(int j = 0; j < kolVarBebas.length; j++){
+                    coef.set(i,j, mat.LEFT().get(i, kolVarBebas[j]));
+                }
+            }
+        }
+
+        /*
         // Hitung banyak variabel bebas, inisialisasi matriks buffer
         numVarBebas = mat.numBarNol();
         coef = new Matriks(mat.BARIS(), numVarBebas);
@@ -34,7 +76,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
         for(int k = 0; k < numVarBebas; k++){
             int i = coef.BARIS()-numVarBebas+k;
             coef.set(i,k+coef.KOLOM()-numVarBebas, -1f);
-        }
+        }*/
     }
 
     public float get(int i, float... arg){
@@ -54,9 +96,10 @@ public class SolusiSPLBanyak extends SolusiSPL{
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
-        str.append('[');
 
         for(int i = 0; i < coef.BARIS(); i++){
+            // Print nama variabel
+            str.append(String.format("x%s = ", i+1));
             int numTerm = 0;
             // Print konstanta
             float r = konst.get(i,0);
@@ -84,10 +127,9 @@ public class SolusiSPLBanyak extends SolusiSPL{
                     numTerm++;
                 }
             }
-            if(i < coef.BARIS()-1)str.append(", ");
+            if(i < coef.BARIS()-1)str.append('\n');
         }
 
-        str.append(']');
         return str.toString();
     }
 }

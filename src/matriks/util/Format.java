@@ -6,12 +6,7 @@ public class Format{
     static DecimalFormat df;
 
     public static String floatFMT(float f){
-        // Lazy initialization
-        if(df == null){
-            df = new DecimalFormat("0");
-            df.setMaximumFractionDigits(2);
-        }
-        return df.format(f);
+        return f % 1f != 0f ? String.format("%f", f) : String.format("%.0f", f);
     }
 
     public static String matWidth(Object o){
@@ -19,6 +14,11 @@ public class Format{
     }
 
     public static String matrixElmtFMT(float f){
-        return matWidth(floatFMT(f));
+        // Lazy initialization
+        if(df == null){
+            df = new DecimalFormat("0");
+            df.setMaximumFractionDigits(2);
+        }
+        return matWidth(df.format(f));
     }
 }

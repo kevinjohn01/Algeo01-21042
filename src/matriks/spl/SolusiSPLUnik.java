@@ -1,6 +1,6 @@
 package matriks.spl;
 
-import java.util.Arrays;
+import static matriks.util.Format.*;
 
 public class SolusiSPLUnik extends SolusiSPL{
     float[] solusi;
@@ -21,6 +21,14 @@ public class SolusiSPLUnik extends SolusiSPL{
 
     @Override
     public String toString(){
-        return Arrays.toString(solusi);
+        StringBuilder str = new StringBuilder();
+
+        for(int i = 0; i < solusi.length; i++){
+            // Print nama dan nilai variabel dalam format x{i} = {f}
+            str.append(String.format("x%s = %s", i+1, floatFMT(solusi[i])));
+            if(i < solusi.length-1)str.append('\n');
+        }
+
+        return str.toString();
     }
 }
