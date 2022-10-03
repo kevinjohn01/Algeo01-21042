@@ -1,10 +1,13 @@
 package matriks;
 
+import java.util.Scanner;
+
 import matriks.util.*;
 import static matriks.util.Constants.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import static matriks.util.Format.*;
 
 public class Matriks implements IMatriks{
     // Konstanta pembantu
@@ -430,7 +433,7 @@ public class Matriks implements IMatriks{
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < BARIS(); i++){
             for(int j = 0; j < KOLOM(); j++){
-                str.append(get(i,j));
+                str.append(matrixElmtFMT(get(i,j)));
                 if(j < KOLOM()-1)str.append(' ');
             }
             if(i < BARIS()-1)str.append('\n');

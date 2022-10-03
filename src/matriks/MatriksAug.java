@@ -2,6 +2,7 @@ package matriks;
 
 import matriks.spl.*;
 import static matriks.util.Constants.*;
+import static matriks.util.Format.*;
 
 public class MatriksAug implements IMatriks{
     /* *** PROPERTI *** */
@@ -202,7 +203,7 @@ public class MatriksAug implements IMatriks{
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < BARIS(); i++){
             for(int j = 0; j < KOLOM(); j++){
-                str.append(get(i,j));
+                str.append(matrixElmtFMT(get(i,j)));
                 if(j == IDXMID()-1)str.append(" |");
                 if(j < KOLOM()-1)str.append(' ');
             }
