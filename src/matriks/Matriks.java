@@ -367,6 +367,25 @@ public class Matriks implements IMatriks{
         return M;
     }
 
+    // extendTo -- Mengembalikan matriks baru berisi semua elemen matriks ini dengan ukuran yang diberikan
+    public Matriks extendTo(int newBaris, int newKolom){
+        Matriks M = new Matriks(newBaris, newKolom);
+        for(int i = 0; i < BARIS(); i++){
+            for(int j = 0; j < KOLOM(); j++){
+                if(M.idxInMatriks(i,j))M.set(i,j, get(i,j));
+            }
+        }
+        return M;
+    }
+    // squarifyRow -- Mengembalikan matriks baru berisi semua elemen matriks ini dengan banyak baris setidaknya sama dengan banyak kolom matriks ini
+    public Matriks squarifyRow(){
+        return extendTo(BARIS() < KOLOM() ? KOLOM() : BARIS(), KOLOM());
+    }
+    // matchRow -- Mengembalikan matriks baru berisi semua elemen matriks ini dengan banyak baris sama dengan matriks other
+    public Matriks matchRow(Matriks other){
+        return extendTo(other.BARIS(), KOLOM());
+    }
+
     public static Matriks readMatriks(Scanner inputln){
         // input size
         String line = inputln.nextLine();

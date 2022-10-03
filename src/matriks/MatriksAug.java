@@ -52,15 +52,15 @@ public class MatriksAug implements IMatriks{
         return idxLead(baris) >= IDXMID();
     }
     // kolInkonsisten -- Mengembalikan true jika indeks kolom memenuhi kondisi inkonsistensi, INPUT ADALAH OUTPUT DARI idxLead(baris)
-    private boolean kolInkonsisten(int j){
+    public boolean kolInkonsisten(int j){
         return j >= IDXMID() && j != IDX_UNDEF;
     }
     // kolNol -- Mengembalikan true jika indeks kolom memenuhi kondisi indeterminansi, INPUT ADALAH OUTPUT DARI idxLead(baris)
-    private boolean kolNol(int j){
+    public boolean kolNol(int j){
         return j == IDX_UNDEF;
     }
     // kolValid -- Mengembalikan true jika indeks kolom memenuhi kondisi validitas, INPUT ADALAH OUTPUT DARI idxLead(baris)
-    private boolean kolValid(int j){
+    public boolean kolValid(int j){
         return 0 <= j && j < IDXMID();
     }
 
@@ -88,7 +88,7 @@ public class MatriksAug implements IMatriks{
             if(j != i){
                 int leadBar = IDX_UNDEF;
                 j = KOLOM();
-                for(int k = i+1; k < BARIS(); k++){
+                for(int k = i; k < BARIS(); k++){
                     int currLeadIdx = idxLead(k);
                     if(currLeadIdx < j){
                         leadBar = k;
