@@ -45,7 +45,7 @@ public class MatriksAug implements IMatriks{
     /* PREDIKAT */
     // isMatriksSPL --  Mengembalikan true jika matriks menyatakan suatu SPL, false sebaliknya
     public boolean isMatriksSPL(){
-        return LEFT().isSquare() && RIGHT().KOLOM() == 1;
+        return /*LEFT().isSquare() &&*/ RIGHT().KOLOM() == 1;
     }
     // isBarisInkonsisten -- Mengembalikan true jika baris inkonsisten (ruas kiri 0, ruas kanan non-0)
     public boolean isBarisInkonsisten(int baris){

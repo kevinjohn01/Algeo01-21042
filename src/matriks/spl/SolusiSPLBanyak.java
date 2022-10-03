@@ -30,7 +30,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
         // Variabel bebas adalah [x_a, x_b, ...] di mana a,b,... adalah indeks kolom nol
         numVarBebas = 0;
         boolean[] isVarBebas = new boolean[mat.IDXMID()];
-        for(int i = 0; i < mat.BARIS(); i++){
+        for(int i = 0; i < mat.LEFT().KOLOM(); i++){
             isVarBebas[i] = true;
             for(int k = 0; k < mat.BARIS(); k++){
                 int lead = mat.LEFT().idxLead(k);
