@@ -7,6 +7,10 @@ import java.util.Scanner;
 import matriks.InterpolasiPolinom;
 import matriks.spl.SolusiSPL;
 
+/*
+ * Submenu dari interpolasi polinom untuk menyelesaikan test case yang diminta
+ */
+
 public class intPolinom {
     public static void tabel(){
         Scanner input = new Scanner(System.in);
@@ -50,7 +54,7 @@ public class intPolinom {
         Matriks MI = new Matriks(n,2);
         float dx = 2/n;
         float curr_x = 0;
-        for ( int i = 0; i<n; i++){
+        for ( int i = 0; i<=n; i++){
             curr_elmt = function(curr_x);
             MI.set(i,1,curr_elmt);
             MI.set(i,0,curr_x);
@@ -62,6 +66,9 @@ public class intPolinom {
     }
 
     public static float function(float x) {
-        return 1;
+        double hasil;
+        double e = 2.71828182845904523536028747135266249;
+        hasil = (x*x + Math.pow(x,0.5))/(Math.pow(e,x) + x);
+        return (float) hasil; //belum diimplementasikan fungsinya 
     }
 }
