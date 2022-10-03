@@ -11,10 +11,11 @@ public class SolusiSPLUnik extends SolusiSPL{
     }
 
     public void set(int i, float val){
-        solusi[i] = val;
+        if(0 <= i && i < solusi.length)solusi[i] = val;
     }
 
     public float get(int i, float... arg){
+        if(i < 0 || solusi.length <= i)return Float.NaN;
         return solusi[i];
     }
 

@@ -150,7 +150,7 @@ public class MatriksAug implements IMatriks{
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         int barNol = numBarNol();
         if(barNol > 0){
-            return new SolusiSPLBanyak(BARIS()/*, barNol, this*/);
+            return new SolusiSPLBanyak(BARIS(), this);
         }
         // Selain itu SPL memiliki solusi unik
         SolusiSPLUnik solusi = new SolusiSPLUnik(BARIS());
@@ -179,7 +179,7 @@ public class MatriksAug implements IMatriks{
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         int barNol = numBarNol();
         if(barNol > 0){
-            return new SolusiSPLBanyak(BARIS()/*, barNol, this*/);
+            return new SolusiSPLBanyak(BARIS(), this);
         }
         // Selain itu SPL memiliki solusi unik
         SolusiSPLUnik solusi = new SolusiSPLUnik(BARIS());
