@@ -1,6 +1,7 @@
 package matriks.spl;
 
 import matriks.*;
+import static matriks.util.Format.*;
 
 public class SolusiSPLBanyak extends SolusiSPL{
     protected int numVarBebas;
@@ -60,7 +61,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
             // Print konstanta
             float r = konst.get(i,0);
             if(r != 0){
-                str.append(r);
+                str.append(floatFMT(r));
                 numTerm++;
             }
             for(int j = 0; j < coef.KOLOM(); j++){
@@ -74,7 +75,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
                         str.append(" " + sgn + " ");
                     }
                     c *= c < 0f ? -1f : 1f;
-                    if(c != 1f)str.append(c);
+                    if(c != 1f)str.append(floatFMT(c));
 
                     // Print nama parameter
                     char v = Character.toChars(Character.valueOf('a')+j)[0];
