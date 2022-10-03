@@ -18,6 +18,15 @@ public class SolusiSPLBanyak extends SolusiSPL{
         // agar persamaan hanya dinyatakan dalam parameter-parameternya
         mat.toReducedRowEchelon();
 
+        for(int i = 0; i < mat.BARIS(); i++){
+            int bar = 0, toSwap = IDX_UNDEF;
+            while(toSwap == IDX_UNDEF && bar < mat.BARIS()){
+                if(mat.LEFT().idxLead(bar) == i)toSwap = bar;
+                bar++;
+            }
+            if(toSwap != IDX_UNDEF)mat.swapBaris(i, toSwap);
+        }
+
         // Variabel bebas adalah [x_a, x_b, ...] di mana a,b,... adalah indeks kolom nol
         numVarBebas = 0;
         boolean[] isVarBebas = new boolean[mat.IDXMID()];
@@ -43,19 +52,27 @@ public class SolusiSPLBanyak extends SolusiSPL{
                 kolVarBebas[idx++] = i;
             }
         }
-
         // Koefisien parameter diambil dari baris matriks
-        int iVarBebas = 0;
         for(int i = 0; i < mat.BARIS(); i++){
-            if(isVarBebas[i]){
+            int j = mat.idxLead(i);
+            /*if(mat.(i)){
                 // Kasus variabel bebas
                 coef.set(i, iVarBebas++, -1f);
             }else{
                 // Kasus variabel terikat parameter
-                for(int j = 0; j < kolVarBebas.length; j++){
+                for(int k = 0; k < kolVarBebas.length; k++){
                     coef.set(i,j, mat.LEFT().get(i, kolVarBebas[j]));
                 }
+            }*/
+            if(j != IDX_UNDEF){
+                for(int k = 0; k < kolVarBebas.length; k++){
+                    coef.set(j,k, mat.LEFT().get(i, kolVarBebas[k]));
+                }
             }
+        }
+        int iVarBebas = 0;
+        for(int i = 0; i < kolVarBebas.length; i++){
+            coef.set(kolVarBebas[i], iVarBebas++, -1f);
         }
 
         /*
