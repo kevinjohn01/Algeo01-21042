@@ -2,32 +2,32 @@ package matriks;
 
 public class Bicubic {
     static float[][] X = {{1,-1,1,-1,-1,1,-1,1,1,-1,1,-1,-1,1,-1,1},{1,0,0,0,-1,0,0,0,1,0,0,0,-1,0,0,0},{1,1,1,1,-1,-1,-1,-1,1,1,1,1,-1,-1,-1,-1},{1,2,4,8,-1,-2,-4,-8,1,2,4,8,-1,-2,-4,-8},{1,-1,1,-1,0,0,0,0,0,0,0,0,0,0,0,0},{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0},{1,2,4,8,0,0,0,0,0,0,0,0,0,0,0,0},{1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1},{1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,2,4,8,1,2,4,8,1,2,4,8,1,2,4,8},{1,-1,1,-1,2,-2,2,-2,4,-4,4,-4,8,-8,8,-8},{1,0,0,0,2,0,0,0,4,0,0,0,8,0,0,0},{1,1,1,1,2,2,2,2,4,4,4,4,8,8,8,8},{1,2,4,8,2,4,8,16,4,8,16,32,8,16,32,64}};
-    public static float[] bicubic(float[][] M){
+    public static Matriks bicubic(Matriks M){
         // ubah masukan menjadi array 1 dimensi (Y)
-        float[] Y = new float[16];
+        Matriks Y = new Matriks(16,1);
         
         int k = 0;
         for(int j = 0; j < 4; j++){
             for(int i = 0; i < 4; i++){
-                Y[k] = M[i][j];
+                Y.set(k,0,M.get(i,j));
                 k++;
             }
         }
 
         // Y = Xa, a = X-1 Y
         // inverse X
-        Matriks XI = MatriksBalikan.Balikan(Matriks.from(X));
+        Matriks XI = matriksBalikan.Balikan(Matriks.from(X));
     
         // kalikan dengan Y
-        float[] a = new float[16];
+        Matriks a = new Matriks(16,1);
         float sum = 0;
 
         for (int i = 0; i < 16; i++){
             sum = 0;
             for(int j = 0; j < 16; j++){
-                sum = sum + XI.get(i,j)*Y[j];
+                sum = sum + XI.get(i,j)*Y.get(j,0);
             }
-            a[i] = sum;
+            a.set(i,0,sum);
         }
         
         return a;
