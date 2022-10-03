@@ -99,23 +99,23 @@ public class matriksBalikan{
 
         inputln.close();
     }
-/*
-    public static float[] SPL(float[][] M, float[] b){
-        float[] hasil = new float[M.length];
-        float[][] Mbalikan = Balikan(M);
+
+    public static Matriks SPL(Matriks M, Matriks b){
+        Matriks hasil = new Matriks(M.bar,0);
+        Matriks Mbalikan = Balikan(M);
 
         float sum;
-        for(int i = 0; i < M.length; i++){
+        for(int i = 0; i < M.bar; i++){
             sum = 0;
-            for(int j = 0; j < M.length; j++){
-                sum = sum + Mbalikan[i][j]*b[j];
+            for(int j = 0; j < M.bar; j++){
+                sum = sum + Mbalikan.get(i,j)*b.get(j,0);
             }
-            hasil[i] = sum;
+            hasil.set(i,0,sum);
         }
 
         return hasil;
     }
-
+/*
     public static void main(String[] args){
         float M[][] = {{1,2,3},{2,5,3},{1,0,8}};
         float b[] = {5,3,1};

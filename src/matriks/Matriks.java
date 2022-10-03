@@ -3,6 +3,8 @@ package matriks;
 import matriks.util.*;
 import static matriks.util.Constants.*;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Matriks implements IMatriks{
     // Konstanta pembantu
@@ -382,6 +384,44 @@ public class Matriks implements IMatriks{
         }
         return m;
     }
+/*
+    public Matriks readMatriksFile(String filename){
+        Matriks M;
+        try{
+            int bar,kol;
+            // baca file
+            File f = new File (filename);
+            Scanner line = new Scanner (f);
+
+            // hitung kolom dengan baca baris pertama, baris = kolom - 1
+            String[] dataln = line.nextLine().split("\\s+");
+            kol = dataln.length;
+            bar = kol - 1;
+            M = new Matriks(bar,kol);
+
+            // pindahkan baris 1 yang sudah terbaca
+            for(int j; j < kol; j++){
+                M.set(0,j,Float.parseFloat(dataln[j]));
+            }
+
+            // baca file, pindahkan ke matriks
+            int i = 1;
+            while(line.hasNextLine()){
+                dataln = line.nextLine().split("\\s+");
+                for (int j = 0; j < kol; j++){
+                    M.set(i,j,Float.parseFloat(dataln[j]));
+                }
+                i++;
+            }
+            line.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+
+        return M;
+    }*/
 
     /* *** TAMPILAN *** */
     // toString -- Mengembalikan representasi string dari matriks
