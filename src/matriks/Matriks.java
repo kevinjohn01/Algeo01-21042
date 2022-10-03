@@ -387,9 +387,9 @@ public class Matriks implements IMatriks{
         }
         return m;
     }
-/*
+
     public Matriks readMatriksFile(String filename){
-        Matriks M;
+        Matriks M = null;
         try{
             int bar,kol;
             // baca file
@@ -403,7 +403,7 @@ public class Matriks implements IMatriks{
             M = new Matriks(bar,kol);
 
             // pindahkan baris 1 yang sudah terbaca
-            for(int j; j < kol; j++){
+            for(int j = 0; j < kol; j++){
                 M.set(0,j,Float.parseFloat(dataln[j]));
             }
 
@@ -424,7 +424,7 @@ public class Matriks implements IMatriks{
           }
 
         return M;
-    }*/
+    }
 
     /* *** TAMPILAN *** */
     // toString -- Mengembalikan representasi string dari matriks

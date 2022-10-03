@@ -32,7 +32,6 @@ public class matriksBalikan{
             }
         }
 
-        System.out.println(MI.toString());
 
         // looping ubah matriks kiri menjadi identitas
 
@@ -43,11 +42,16 @@ public class matriksBalikan{
             for(ii = i + 1; ii < MI.bar; ii++){
                 r = MI.get(ii,i)/MI.get(i,i);
                 for(j = 0; j < MI.kol; j++){
-                    MI.set(ii,j,MI.get(ii,j) - r*MI.get(i,j));
+                    MI.set(ii,j,(MI.get(ii,j) - r*MI.get(i,j)));
                 }
             }
         }
-        
+        for(i = 0; i < MI.BARIS(); i++){ // TES PRINT
+            for(j = 0; j < MI.KOLOM(); j++){
+                System.out.print(MI.get(i,j) + " ");
+            }
+            System.out.println();
+        }
         float x;
         // menjadikan elemen diagonal menjadi 1
         for(i = 0; i < MI.bar; i++){
