@@ -28,14 +28,15 @@ public class InterpolasiPolinom {
         for (int i=0; i<m; i++){
             curr_val = 1;
             value = MI.get(i,0);
-            int jj=0;
             for (int ii=0; ii<m; ii++) {
-                M.set(ii,jj,curr_val);
+                //System.out.print(curr_val + " ");
+                M.set(i,ii,curr_val);
                 curr_val = curr_val*value;
-                jj = jj+1;
             }
         }
-    
+        
+        System.out.println(M.toString());
+
         //mengambil nilai konstanta
         float[] l= new float[m];
         for (int i=0; i<m; i++) {
@@ -44,7 +45,8 @@ public class InterpolasiPolinom {
 
         //menghitung spl dari matriks aug
         SolusiSPL k;
-        k = Cramer.cramer(M, l);
+        k = (MatriksAug.from(M, Matriks.colMat(l))).elimGaussJordan();
+        //k = Cramer.cramer(M, l);
         input.close();
         return k;
     }
@@ -56,11 +58,9 @@ public class InterpolasiPolinom {
         for (int i=0; i<MI.bar; i++){
             curr_val = 1;
             val = MI.get(i,0);
-            int jj=0;
             for (int ii=0; ii<MI.bar; ii++) {
-                M.set(ii,jj,curr_val);
+                M.set(i,ii,curr_val);
                 curr_val = curr_val*val;
-                jj = jj+1;
             }
         }            
     
@@ -69,10 +69,12 @@ public class InterpolasiPolinom {
         for (int i=0; i<MI.bar; i++) {
             l[i] = MI.get(i,1);
         }
-
+        //System.out.println(M.toString());
         //menghitung spl dari matriks aug
         SolusiSPL k;
-        k = Cramer.cramer(MI, l);
+        k = (MatriksAug.from(M, Matriks.colMat(l))).elimGaussJordan();
+        //k = Cramer.cramer(MI, l);
+        //System.out.println(k.toString());
         return k;
     }
 
