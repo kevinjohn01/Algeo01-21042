@@ -362,7 +362,7 @@ public class Matriks implements IMatriks{
         return M;
     }
 
-    public Matriks readMatriks(Scanner inputln){
+    public static Matriks readMatriks(Scanner inputln){
         // input size
         String line = inputln.nextLine();
         String[] line_arr = line.split("\\s+");

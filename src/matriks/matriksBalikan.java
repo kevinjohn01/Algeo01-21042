@@ -1,7 +1,7 @@
 package matriks;
 import java.util.Scanner;
 
-public class matriksBalikan {
+public class MatriksBalikan{
     /* Original code -- Manuella Ivana Uli Sianipar */
     public static Matriks Balikan(Matriks M){
         int i,j, ii;
@@ -86,7 +86,7 @@ public class matriksBalikan {
 
     public void main(String[] args){
         Scanner inputln = new Scanner(System.in);
-        Matriks M = readMatriks(inputln);
+        Matriks M = Matriks.readMatriks(inputln);
 
         Matriks MI = Balikan(M);
 

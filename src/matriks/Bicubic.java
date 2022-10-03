@@ -16,7 +16,7 @@ public class Bicubic {
 
         // Y = Xa, a = X-1 Y
         // inverse X
-        Matriks XI = Balikan(X);
+        Matriks XI = MatriksBalikan.Balikan(Matriks.from(X));
     
         // kalikan dengan Y
         float[] a = new float[16];
@@ -25,7 +25,7 @@ public class Bicubic {
         for (int i = 0; i < 16; i++){
             sum = 0;
             for(int j = 0; j < 16; j++){
-                sum = sum + XI[i][j]*Y[j];
+                sum = sum + XI.get(i,j)*Y[j];
             }
             a[i] = sum;
         }
