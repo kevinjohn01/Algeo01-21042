@@ -1,5 +1,4 @@
 package matriks;
-import java.util.Scanner;
 
 public class matriksBalikan{
     /* Original code -- Manuella Ivana Uli Sianipar */
@@ -13,7 +12,7 @@ public class matriksBalikan{
             }
         }
         */
-        Matriks MI = new Matriks(M.bar, 2*M.kol);
+        Matriks MI = new Matriks(M.bar, 2*(M.kol));
 
         // input nilai matriks awal
         for(i = 0; i < M.bar; i++){
