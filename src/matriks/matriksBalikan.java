@@ -13,12 +13,12 @@ public class matriksBalikan{
             }
         }
         */
-        Matriks MI = new Matriks(2*M.bar, 2*M.kol);
+        Matriks MI = new Matriks(M.bar, 2*M.kol);
 
         // input nilai matriks awal
         for(i = 0; i < M.bar; i++){
             for(j = 0; j < M.kol; j++){
-                MI.set(i,j,M.get(1,j));
+                MI.set(i,j,M.get(i,j));
             }
         }
 
@@ -33,6 +33,8 @@ public class matriksBalikan{
             }
         }
 
+        System.out.println(MI.toString());
+
         // looping ubah matriks kiri menjadi identitas
 
         // membuat matriks segitiga atas
@@ -46,7 +48,7 @@ public class matriksBalikan{
                 }
             }
         }
-
+        
         float x;
         // menjadikan elemen diagonal menjadi 1
         for(i = 0; i < MI.bar; i++){
@@ -83,7 +85,7 @@ public class matriksBalikan{
 
         return Mhasil;
     }
-
+/*
     public void main(String[] args){
         Scanner inputln = new Scanner(System.in);
         Matriks M = Matriks.readMatriks(inputln);
@@ -98,7 +100,7 @@ public class matriksBalikan{
         }
 
         inputln.close();
-    }
+    }*/
 
     public static Matriks SPL(Matriks M, Matriks b){
         Matriks hasil = new Matriks(M.bar,0);
