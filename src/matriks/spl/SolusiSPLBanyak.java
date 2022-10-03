@@ -68,7 +68,11 @@ public class SolusiSPLBanyak extends SolusiSPL{
                 if(c != 0){
                     // Print c dan tanda
                     char sgn = c < 0f ? '-' : '+';
-                    if(sgn != '+' || numTerm != 0)str.append(sgn);
+                    if(numTerm == 0){
+                        if(sgn == '-')str.append(sgn);
+                    }else{
+                        str.append(" " + sgn + " ");
+                    }
                     c *= c < 0f ? -1f : 1f;
                     if(c != 1f)str.append(c);
 
