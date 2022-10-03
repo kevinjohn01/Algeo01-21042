@@ -115,7 +115,7 @@ public class Program{
                         menu1.KaidahCramerTerm(M);
                         in.close();}
                 }
-
+            }
 
             else if (inp == 2){ // 2. Determinan
                 // pilih submenu
@@ -273,6 +273,7 @@ public class Program{
 
             
         }
+
         input_menu.close();
 
 
@@ -305,6 +306,5 @@ public class Program{
 
         in.close();
         */
-    }
-}
-}
+    }}
+
