@@ -16,7 +16,8 @@ public class intPolinom {
         Scanner input = new Scanner(System.in);
 
         System.out.print("x = ");
-        float n = input.nextFloat();
+        String m = input.nextLine();
+        float n = Float.parseFloat(m);
         float y = InterpolasiPolinom.nilaifungsi(InterpolasiPolinom.interpolasipolinom(), n);
         System.out.print("f(x) = ");
         System.out.print(y);
@@ -25,8 +26,10 @@ public class intPolinom {
 
     public static void covid() {
         Scanner input = new Scanner(System.in);
-        int dd = input.nextInt();
-        int mm = input.nextInt();
+        String d = input.nextLine();
+        String m = input.nextLine();
+        int dd = Integer.parseInt(d);
+        int mm = Integer.parseInt(m);
         int hari;
         if ((mm==1) || (mm==3) || (mm==5) || (mm==7) || (mm==8) || (mm==10) || (mm==12)){
             hari = 31;
@@ -50,7 +53,8 @@ public class intPolinom {
         SolusiSPL k;
         
         Scanner input = new Scanner(System.in);
-        int n = input.nextInt();
+        String m = input.nextLine();
+        int n = Integer.parseInt(m);
         Matriks MI = new Matriks(n,2);
         float dx = 2/n;
         float curr_x = 0;
@@ -69,6 +73,6 @@ public class intPolinom {
         double hasil;
         double e = 2.71828182845904523536028747135266249;
         hasil = (x*x + Math.pow(x,0.5))/(Math.pow(e,x) + x);
-        return (float) hasil; //belum diimplementasikan fungsinya 
+        return (float) hasil; 
     }
 }

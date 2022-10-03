@@ -6,39 +6,39 @@ import matriks.spl.SolusiSPL;
 
 public class InterpolasiPolinom {
     public static SolusiSPL interpolasipolinom() {
-        float val, curr_val;
+        float value, curr_val;
         Scanner input = new Scanner(System.in);
 
         //input jumlah titik
-        int n = input.nextInt();
-
+        String n = input.nextLine();
+        int m = Integer.parseInt(n);
         //menyimpan titik ke matriks
-        Matriks MI = new Matriks(n,2);
-        Matriks M = new Matriks(n,n); //menyimpan nilai yang akan dihitung spl nya
+        Matriks MI = new Matriks(m,2);
+        Matriks M = new Matriks(m,m); //menyimpan nilai yang akan dihitung spl nya
 
-        for (int i=0; i<n; i++){
+        for (int i=0; i<m; i++){
             for(int j=0; j<2; j++) {
-                val = input.nextFloat();
-                MI.set(i,j,val);
+                String val = input.nextLine();
+                value = Float.parseFloat(val);
+                MI.set(i,j,value);
             }
         }
 
         //menyimpan nilai x dari titik untuk dimasukkan ke dalam matriks
-        for (int i=0; i<n; i++){
+        for (int i=0; i<m; i++){
             curr_val = 1;
-            val = MI.get(i,0);
+            value = MI.get(i,0);
             int jj=0;
-            for (int ii=0; ii<n; ii++) {
+            for (int ii=0; ii<m; ii++) {
                 M.set(ii,jj,curr_val);
-                curr_val = curr_val*val;
+                curr_val = curr_val*value;
                 jj = jj+1;
             }
         }
-        
     
         //mengambil nilai konstanta
-        float[] l= new float[n];
-        for (int i=0; i<n; i++) {
+        float[] l= new float[m];
+        for (int i=0; i<m; i++) {
             l[i] = MI.get(i,1);
         }
 
