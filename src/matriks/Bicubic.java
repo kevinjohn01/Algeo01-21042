@@ -16,7 +16,7 @@ public class Bicubic {
 
         // Y = Xa, a = X-1 Y
         // inverse X
-        float[][] XI = matriksBalikan.Balikan(X);
+        Matriks XI = Balikan(X);
     
         // kalikan dengan Y
         float[] a = new float[16];

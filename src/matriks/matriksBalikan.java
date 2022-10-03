@@ -1,4 +1,5 @@
 package matriks;
+import java.util.Scanner;
 
 public class matriksBalikan {
     /* Original code -- Manuella Ivana Uli Sianipar */
@@ -81,6 +82,22 @@ public class matriksBalikan {
         }
 
         return Mhasil;
+    }
+
+    public void main(String[] args){
+        Scanner inputln = new Scanner(System.in);
+        Matriks M = readMatriks(inputln);
+
+        Matriks MI = Balikan(M);
+
+        for(int i = 0; i < MI.bar; i++){
+            for(int j = 0; j < MI.kol; j++){
+                System.out.print(MI.get(i,j));
+            }
+            System.out.println();
+        }
+
+        inputln.close();
     }
 /*
     public static float[] SPL(float[][] M, float[] b){
