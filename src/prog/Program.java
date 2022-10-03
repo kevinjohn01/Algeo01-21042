@@ -244,7 +244,12 @@ public class Program{
                     if (inp == 1){ // 1. File
 
                     }
-                    else{} // 2. Terminal
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        Matriks M = Matriks.readMatriks(in);
+                        menu5.BicubicTerm(M);
+                        in.close();
+                    } 
 
             }
 
