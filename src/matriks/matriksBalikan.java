@@ -75,9 +75,9 @@ public class matriksBalikan{
         // simpan matriks baru
         Matriks Mhasil = new Matriks(M.bar,M.kol);
 
-        for(i = 0; i < MI.bar; i++){
-            for(j = 0; j < M.kol; j++){
-                Mhasil.set(i,j,MI.get(i,j + M.bar));
+        for(i = 0; i < M.BARIS(); i++){
+            for(j = 0; j < M.BARIS(); j++){
+                Mhasil.set(i,j,MI.get(i,j + M.BARIS()));
             }
         }
 

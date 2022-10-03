@@ -7,6 +7,7 @@ public class Program{
     /* *** MAIN *** */
     public static void main(String[] args){
         boolean exit = false;
+        Scanner input_menu = new Scanner(System.in);
 
         while(!exit){
             // menu utama
@@ -14,7 +15,7 @@ public class Program{
             
             // input menu
             System.out.println("Masukkan pilihan menu: ");
-            Scanner input_menu = new Scanner(System.in);
+            
             String inp = input_menu.nextLine();
             while (!(inp == "1" || inp == "2" || inp == "3" || inp == "4" || inp == "5" || inp == "6" || inp == "7")){
                 System.out.println("Masukkan pilihan menu: ");
@@ -100,9 +101,9 @@ public class Program{
                 exit = true;
             }
 
-            input_menu.close();
+            
         }
-
+        input_menu.close();
 
 
         /*

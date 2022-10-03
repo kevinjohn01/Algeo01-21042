@@ -1,6 +1,5 @@
-package prog;
+package matriks;
 import java.util.Scanner;
-import matriks.*;
 
 public class tesBicubic {
     public static void main(String[] args){
