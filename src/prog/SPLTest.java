@@ -3,9 +3,7 @@ package prog;
 import java.util.Scanner;
 
 import matriks.*;
-import matriks.spl.SolusiSPL;
-import matriks.spl.SolusiSPLBanyak;
-import matriks.util.Format;
+import matriks.spl.*;
 
 public class SPLTest{
     public static void main(String[] args){

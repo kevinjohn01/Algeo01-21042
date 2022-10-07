@@ -50,7 +50,9 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks B: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.ElimGaussTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -72,7 +74,9 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks B: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.ElimGaussJordanTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -95,7 +99,9 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks B: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.MatriksBalikanTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -117,7 +123,9 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks B: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.KaidahCramerTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -148,7 +156,8 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
-                        Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks: ");
+                        Matriks M = Matriks.readMatriksSquare(in);
                         menu2.ReduksiBarisTerm(M);
                         in.close();}
 
@@ -169,7 +178,8 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
-                        Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks: ");
+                        Matriks M = Matriks.readMatriksSquare(in);
                         menu2.EkspansiTerm(M);
                         in.close();}
 
@@ -200,7 +210,8 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
-                        Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks: ");
+                        Matriks M = Matriks.readMatriksSquare(in);
                         menu3.ReduksiBarisTerm(M);
                         in.close();}
 
@@ -220,7 +231,8 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
-                        Matriks M = Matriks.readMatriks(in);
+                        System.out.println("Input matriks: ");
+                        Matriks M = Matriks.readMatriksSquare(in);
                         menu3.AdjoinTerm(M);
                         in.close();}
 
@@ -272,6 +284,7 @@ public class Program{
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Input matriks: ");
                         Matriks M = Matriks.readMatriks(in);
                         menu5.BicubicTerm(M);
                         in.close();
@@ -287,11 +300,44 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        /// Input nilai-nilai tes x_k
+                        in = new Scanner(System.in);
+                        System.out.print("Nilai X uji (format \"x1 x2 ... xn\"): ");
+                        String inpStr[] = in.nextLine().trim().split("\\s+");
+                        float UJI[] = new float[inpStr.length];
+                        for(int i = 0; i < UJI.length; i++)UJI[i] = Float.parseFloat(inpStr[i]);
+                        RegresiLinearBerganda.MultLinearRegressionFile(file, UJI);
+                        in.close();
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
-                        
+                        System.out.print("Banyak peubah X: "); int N = Integer.parseInt(in.nextLine());
+                        System.out.print("Banyak sampel: "); int M = Integer.parseInt(in.nextLine());
+                        Matriks EXPL = new Matriks(M, N);
+                        Matriks RESP = new Matriks(M, 1);
+                        String inpStr[];
+                        /// Input titik sampel: nilai eksplanatorial
+                        for(int sampel = 0; sampel < M; sampel++){
+                            System.out.format("Titik sampel ke-%d (format \"x1i x2i ... xni\"): ", sampel+1);
+                            inpStr = in.nextLine().trim().split("\\s+");
+                            for(int var = 0; var < N; var++){
+                                EXPL.set(sampel, var, Float.parseFloat(inpStr[var]));
+                            }
+                        }
+                        /// Input titik sampel: nilai respons/observasi
+                        for(int sampel = 0; sampel < M; sampel++){
+                            System.out.format("Nilai respons ke-%d: ", sampel+1);
+                            RESP.set(sampel, 0, Float.parseFloat(in.nextLine()));
+                        }
+                        /// Input nilai-nilai tes x_k
+                        System.out.print("Nilai X uji (format \"x1 x2 ... xn\"): ");
+                        inpStr = in.nextLine().trim().split("\\s+");
+                        float UJI[] = new float[inpStr.length];
+                        for(int i = 0; i < UJI.length; i++)UJI[i] = Float.parseFloat(inpStr[i]);
+                        /// Proses
+                        RegresiLinearBerganda.MultLinearRegression(EXPL, RESP, UJI);
                         in.close();
                     }
 
