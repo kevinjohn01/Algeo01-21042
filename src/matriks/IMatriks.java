@@ -44,7 +44,12 @@ public interface IMatriks{
     }
 
     /* *** FUNGSI *** */
-    public int idxLead(int baris);
+    public default int idxLead(int baris){
+        for(int j = 0; j < KOLOM(); j++){
+            if(!Mathf.zero(get(baris,j)))return j;
+        }
+        return IDX_UNDEF;
+    }
     public default boolean isBarisNol(int baris){
         return idxLead(baris) == IDX_UNDEF;
     }
@@ -55,8 +60,8 @@ public interface IMatriks{
         }
         return c;
     }
-    public boolean toRowEchelon();
-    public boolean toReducedRowEchelon();
+    public IMatriks toRowEchelon();
+    public IMatriks toReducedRowEchelon();
 
     /* *** OPERASI BARIS ELEMENTER *** */
     // addBaris -- Menjumlahkan satu baris dengan hasil kali konstanta baris lain

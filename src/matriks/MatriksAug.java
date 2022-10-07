@@ -1,8 +1,8 @@
 package matriks;
 
 import matriks.spl.*;
+import matriks.util.*;
 import static matriks.util.Constants.*;
-import static matriks.util.Format.*;
 
 public class MatriksAug implements IMatriks{
     /* *** PROPERTI *** */
@@ -63,10 +63,31 @@ public class MatriksAug implements IMatriks{
     public boolean kolValid(int j){
         return 0 <= j && j < IDXMID();
     }
+    // solUnik -- Mengembalikan true jika solusi unik
+    public boolean solUnik(){
+        if(!LEFT().isSquare())return false;
+        boolean b = true;
+        int i = 0;
+        while(b && i < BARIS()){
+            b = Mathf.one(get(i,i));
+            i++;
+        }
+        return b;
+    }
+    // inkonsisten -- Mengembalikan true jika ada baris inkonsisten
+    public boolean inkonsisten(){
+        boolean b = false;
+        int i = 0;
+        while(!b && i < BARIS()){
+            b = isBarisInkonsisten(i);
+            i++;
+        }
+        return b;
+    }
 
     /* *** FUNGSI *** */
     // idxLead -- Mengembalikan indeks elemen non-0 pertama di suatu baris, IDX_UNDEF jika tidak ada
-    public int idxLead(int baris){
+    /*public int idxLead(int baris){
         int j = LEFT().idxLead(baris);
         if(j == IDX_UNDEF){
             j = RIGHT().idxLead(baris);
@@ -74,83 +95,82 @@ public class MatriksAug implements IMatriks{
             return IDXMID() + j;
         }
         return j;
-    }
+    }*/
 
     /* *** OPERASI MATRIKS AUGMENTED *** */
     // toRowEchelon -- Mengubah matriks menjadi bentuk row echelon, mengembalikan true jika tidak ada baris inkonsisten
-    public boolean toRowEchelon(){
-        boolean inconsistent = false;
+    public MatriksAug toRowEchelon(){
         for(int i = 0; i < BARIS(); i++){
-            int j = idxLead(i);
-            // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-            inconsistent = kolInkonsisten(j);
-            // Jika j != i, tukar baris dengan baris lain dengan leading elemen indeks terkecil
-            if(j != i){
-                int leadBar = IDX_UNDEF;
-                j = KOLOM();
-                for(int k = i; k < BARIS(); k++){
-                    int currLeadIdx = idxLead(k);
-                    if(currLeadIdx < j){
-                        leadBar = k;
-                        j = currLeadIdx;
-                    }
+            int leadCol = IDX_UNDEF, leadRow = IDX_UNDEF;
+            // Tukar baris dengan baris lain yang leading elemennya paling kiri
+            for(int row = i; row < BARIS(); row++){
+                int currLeadCol = idxLead(row);
+                if(leadRow == IDX_UNDEF || currLeadCol < leadCol){
+                    leadCol = currLeadCol;
+                    leadRow = row;
                 }
-                if(leadBar != IDX_UNDEF){
-                    swapBaris(i, leadBar);
-                }
+                //System.out.format("%d/%d ", currLeadCol, leadCol);
             }
-            j = idxLead(i);
+            if(leadRow != IDX_UNDEF && leadRow != i)swapBaris(i, leadRow);
             // Lakukan operasi jika baris valid
-            if(kolValid(j)){
+            if(kolValid(leadCol)){
                 // Ubah menjadi leading 1
-                if(get(i,j) != 1f)sclBaris(i, 1f/get(i,j));
-                // Eliminasi elemen kolom j di bawahnya
-                for(int k = i+1; k < BARIS(); k++){
-                    int l = idxLead(k);
-                    if(j==l){
-                        addBaris(k, i, -get(k,l));
-                    }
+                if(!Mathf.one(get(i,leadCol)))sclBaris(i, 1f/get(i,leadCol));
+                // Eliminasi elemen di kolom yang sama dengan leading 1 di bawahnya
+                for(int row = i+1; row < BARIS(); row++){
+                    float val = get(row, leadCol);
+                    if(!Mathf.zero(val))addBaris(row, i, -val);
+                    // Nolkan leading elemen untuk menghindari rounding error
+                    set(row, leadCol, 0f);
                 }
             }
         }
-        return !inconsistent;
+        return this;
     }
     // toReducedRowEchelon -- Mengubah matriks menjadi bentuk reduced row echelon, mengembalikan true jika tidak ada baris inkonsisten
-    public boolean toReducedRowEchelon(){
-        boolean inconsistent = !toRowEchelon();
+    public MatriksAug toReducedRowEchelon(){
+        toRowEchelon();
         for(int i = BARIS()-1; i >= 0; i--){
-            int j = idxLead(i);
-            // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-            inconsistent = kolInkonsisten(j);
-            for(int k = i-1; k >= 0; k--){
-                // Lakukan operasi jika baris valid
-                if(kolValid(j)){
-                    // Eliminasi elemen kolom j di atasnya
-                    float x = get(k,j);
-                    if(x != 0f){
-                        addBaris(k, i, -x);
-                    }
+            int leadCol = idxLead(i);
+            // Lakukan operasi jika baris valid
+            if(kolValid(leadCol)){
+                for(int row = i-1; row >= 0; row--){
+                    // Eliminasi elemen di kolom yang sama dengan leading 1 di atasnya
+                    float val = get(row, leadCol);
+                    if(!Mathf.zero(val))addBaris(row, i, -val);
+                    // Nolkan elemen untuk menghindari rounding error
+                    set(row, leadCol, 0f);
                 }
             }
         }
-        return !inconsistent;
+        return this;
     }
 
     /* *** SPL SOLVER *** */
+    // solveInverse -- Mengembalikan solusi SPL yang direpresentasikan oleh matriks ini, menggunakan metode matriks invers
+    public SolusiSPL solveInverse(){
+        if(!LEFT().isInvertible())return new SolusiSPLInkonklusif(BARIS());
+        Matriks X = LEFT().inverse().product(RIGHT());
+        SolusiSPLUnik sol = new SolusiSPLUnik(BARIS());
+        for(int i = 0; i < BARIS(); i++){
+            sol.set(i, X.get(i,0));
+        }
+        return sol;
+    }
     // elimGauss -- Mengembalikan solusi SPL yang direpresentasikan oleh matriks ini, menggunakan metode eliminasi Gauss
     public SolusiSPL elimGauss(){
         // Handle kasus matriks non-SPL
         if(!isMatriksSPL())return null;
         
         // Ubah matriks augmented menjadi bentuk row echelon
-        boolean inconsistent = !toRowEchelon();
+        toRowEchelon();
         // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-        if(inconsistent){
+        boolean inc = inkonsisten();
+        if(inc){
             return new SolusiSPLNul(BARIS());
         }
         // Jika ada baris nol, maka SPL memiliki solusi banyak
-        int barNol = numBarNol();
-        if(barNol > 0){
+        if(!solUnik()){
             return new SolusiSPLBanyak(BARIS(), this);
         }
         // Selain itu SPL memiliki solusi unik
@@ -172,14 +192,14 @@ public class MatriksAug implements IMatriks{
         if(!isMatriksSPL())return null;
 
         // Ubah matriks augmented menjadi bentuk reduced row echelon
-        boolean inconsistent = !toReducedRowEchelon();
+        toReducedRowEchelon();
         // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-        if(inconsistent){
+        boolean inc = inkonsisten();
+        if(inc){
             return new SolusiSPLNul(BARIS());
         }
         // Jika ada baris nol, maka SPL memiliki solusi banyak
-        int barNol = numBarNol();
-        if(barNol > 0){
+        if(!solUnik()){
             return new SolusiSPLBanyak(BARIS(), this);
         }
         // Selain itu SPL memiliki solusi unik
@@ -203,7 +223,7 @@ public class MatriksAug implements IMatriks{
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < BARIS(); i++){
             for(int j = 0; j < KOLOM(); j++){
-                str.append(matrixElmtFMT(get(i,j)));
+                str.append(Format.matrixElmtFMT(get(i,j)));
                 if(j == IDXMID()-1)str.append(" |");
                 if(j < KOLOM()-1)str.append(' ');
             }

@@ -4,10 +4,8 @@ import java.util.Scanner;
 
 import matriks.util.*;
 import static matriks.util.Constants.*;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import static matriks.util.Format.*;
 
 public class Matriks implements IMatriks{
     // Konstanta pembantu
@@ -226,69 +224,57 @@ public class Matriks implements IMatriks{
         return S;
     }
     // toRowEchelon -- Mengubah matriks menjadi bentuk row echelon (leading tidak harus 1), mengembalikan true jika tidak ada baris inkonsisten
-    public boolean toRowEchelon(){
-        boolean singular = false;
+    public Matriks toRowEchelon(){
         for(int i = 0; i < BARIS(); i++){
-            int j = idxLead(i);
-            // Matriks singular jika ada baris nol
-            singular = j == IDX_UNDEF;
-            // Jika j != i, tukar baris dengan baris lain dengan leading elemen indeks terkecil, balik tanda untuk mempreservasi determinan
-            if(j != i){
-                int leadBar = IDX_UNDEF;
-                j = KOLOM();
-                for(int k = i+1; k < BARIS(); k++){
-                    int currLeadIdx = idxLead(k);
-                    if(currLeadIdx < j){
-                        leadBar = k;
-                        j = currLeadIdx;
-                    }
+            int leadCol = IDX_UNDEF, leadRow = IDX_UNDEF;
+            // Tukar baris dengan baris lain yang leading elemennya paling kiri
+            for(int row = i; row < BARIS(); row++){
+                int currLeadCol = idxLead(row);
+                if(leadRow == IDX_UNDEF || currLeadCol < leadCol){
+                    leadCol = currLeadCol;
+                    leadRow = row;
                 }
-                if(leadBar != IDX_UNDEF){
-                    swapBaris(i, leadBar);
-                    sclBaris(i, -1f);
-                }
+                //System.out.format("%d/%d ", currLeadCol, leadCol);
             }
-            j = idxLead(i);
-            // Lakukan operasi jika baris non-0
-            if(j != IDX_UNDEF){
-                // Eliminasi elemen kolom j di bawahnya
-                for(int k = i+1; k < BARIS(); k++){
-                    int l = idxLead(k);
-                    if(j==l){
-                        addBaris(k, i, -get(k,l)/get(i,l));
-                    }
+            if(leadRow != IDX_UNDEF && leadRow != i)swapBaris(i, leadRow);
+            // Lakukan operasi jika baris valid
+            if(leadCol != IDX_UNDEF){
+                // Eliminasi elemen di kolom yang sama dengan leading elemen di bawahnya
+                for(int row = i+1; row < BARIS(); row++){
+                    float val = get(row, leadCol);
+                    if(!Mathf.zero(val))addBaris(row, i, -val/get(i,leadCol));
+                    // Nolkan leading elemen untuk menghindari rounding error
+                    set(row, leadCol, 0f);
                 }
             }
         }
-        return !singular;
+        return this;
     }
     // toReducedRowEchelon -- Mengubah matriks menjadi bentuk reduced row echelon (leading tidak harus 1), mengembalikan true jika tidak ada baris inkonsisten
-    public boolean toReducedRowEchelon(){
-        boolean singular = !toRowEchelon();
+    public Matriks toReducedRowEchelon(){
+        toRowEchelon();
         for(int i = BARIS()-1; i >= 0; i--){
-            int j = idxLead(i);
-            // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
-            singular = j != IDX_UNDEF;
-            for(int k = i-1; k >= 0; k--){
-                // Lakukan operasi jika baris valid
-                if(j != IDX_UNDEF){
-                    // Eliminasi elemen kolom j di atasnya
-                    float x = get(k,j)/get(i,j);
-                    if(x != 0f){
-                        addBaris(k, i, -x);
-                    }
+            int leadCol = idxLead(i);
+            // Lakukan operasi jika baris valid
+            if(leadCol != IDX_UNDEF){
+                for(int row = i-1; row >= 0; row--){
+                    // Eliminasi elemen di kolom yang sama dengan leading elemen di atasnya
+                    float val = get(row, leadCol);
+                    if(!Mathf.zero(val))addBaris(row, i, -val/get(i,leadCol));
+                    // Nolkan elemen untuk menghindari rounding error
+                    set(row, leadCol, 0f);
                 }
             }
         }
-        return !singular;
+        return this;
     }
     // idxLead -- Mengembalikan indeks elemen non-0 pertama di suatu baris, IDX_UNDEF jika tidak ada
-    public int idxLead(int baris){
+    /*public int idxLead(int baris){
         for(int j = 0; j < KOLOM(); j++){
             if(get(baris,j) != 0f)return j;
         }
         return IDX_UNDEF;
-    }
+    }*/
     // numBarNol -- Mengembalikan banyak baris nol dalam matriks
     public int numBarNol(){
         int c = 0;
@@ -452,7 +438,7 @@ public class Matriks implements IMatriks{
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < BARIS(); i++){
             for(int j = 0; j < KOLOM(); j++){
-                str.append(matrixElmtFMT(get(i,j)));
+                str.append(Format.matrixElmtFMT(get(i,j)));
                 if(j < KOLOM()-1)str.append(' ');
             }
             if(i < BARIS()-1)str.append('\n');

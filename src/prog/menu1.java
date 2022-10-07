@@ -16,11 +16,9 @@ public class menu1 {
         */
     }
     // 1.2. Terminal
-    public static void ElimGaussTerm(Matriks M){
-        /*
+    public static void ElimGaussTerm(MatriksAug M){
         SolusiSPL sol = M.elimGauss();
-        sol.toString();
-         */
+        System.out.println(sol.toString());
     }
 
     // 2. Metode Eliminasi Gauss-Jordan
@@ -33,11 +31,9 @@ public class menu1 {
         */
     }
     // 2.2. Terminal
-    public static void ElimGaussJordanTerm(Matriks M){
-        /*
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-         */
+    public static void ElimGaussJordanTerm(MatriksAug M){
+        SolusiSPL sol = M.elimGaussJordan();
+        System.out.println(sol.toString());
     }
 
     // 3. Metode Matriks Balikan
@@ -48,10 +44,9 @@ public class menu1 {
          */
     }
     // 3.2 Terminal
-    public static void MatriksBalikanTerm(Matriks M){
-        /*
-         
-         */
+    public static void MatriksBalikanTerm(MatriksAug M){
+        SolusiSPL sol = M.solveInverse();
+        System.out.println(sol.toString());
     }
 
     // 4. Kaidah Cramer
@@ -62,9 +57,8 @@ public class menu1 {
          */
     }
     // 4.2 Terminal
-    public static void KaidahCramerTerm(Matriks M){
-        /*
-         
-         */
+    public static void KaidahCramerTerm(MatriksAug M){
+        SolusiSPL sol = Cramer.cramerAug(M);
+        System.out.println(sol.toString());
     }
 }
