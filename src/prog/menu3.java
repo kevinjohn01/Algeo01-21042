@@ -4,7 +4,7 @@ import matriks.*;
 import matriks.spl.*;
 
 
-// 1. DETERMINAN
+// 1. INVERS
 public class menu3 {
     // 1. Metode Reduksi Baris
     // 1.1. File
@@ -17,10 +17,12 @@ public class menu3 {
     }
     // 1.2. Terminal
     public static void ReduksiBarisTerm(Matriks M){
-        /*
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-         */
+        Matriks Minv = M.inverseWRed();
+        if(Minv != null){
+            System.out.println(Minv.toString());
+        }else{
+            System.out.println("Tidak dapat menginvers matriks");
+        }
     }
 
     // 2. Metode Ekspansi Kofaktor
@@ -34,9 +36,11 @@ public class menu3 {
     }
     // 2.2. Terminal
     public static void AdjoinTerm(Matriks M){
-        /*
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-         */
+        Matriks Minv = M.inverseWAdj();
+        if(Minv != null){
+            System.out.println(Minv.toString());
+        }else{
+            System.out.println("Tidak dapat menginvers matriks");
+        }
     }
 }

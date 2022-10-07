@@ -2,6 +2,7 @@ package prog;
 import java.util.Scanner;
 import matriks.*;
 import matriks.spl.*;
+import matriks.util.Format;
 
 
 // 1. DETERMINAN
@@ -17,10 +18,8 @@ public class menu2 {
     }
     // 1.2. Terminal
     public static void ReduksiBarisTerm(Matriks M){
-        /*
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-         */
+        float det = M.determinantWRed();
+        System.out.format("det(M) = %s%n", Format.floatFMT(det));
     }
 
     // 2. Metode Ekspansi Kofaktor
@@ -34,9 +33,7 @@ public class menu2 {
     }
     // 2.2. Terminal
     public static void EkspansiTerm(Matriks M){
-        /*
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-         */
+        float det = M.determinantWExp();
+        System.out.format("det(M) = %s%n", Format.floatFMT(det));
     }
 }

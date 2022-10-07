@@ -48,7 +48,8 @@ public class Program{
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
                         Matriks M = Matriks.readMatriks(in);
-                        menu1.ElimGaussTerm(M);
+                        Matriks N = Matriks.readMatriks(in);
+                        menu1.ElimGaussTerm(MatriksAug.from(M, N));
                         in.close();}
 
                 }
@@ -69,7 +70,8 @@ public class Program{
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
                         Matriks M = Matriks.readMatriks(in);
-                        menu1.ElimGaussJordanTerm(M);
+                        Matriks N = Matriks.readMatriks(in);
+                        menu1.ElimGaussJordanTerm(MatriksAug.from(M, N));
                         in.close();}
 
 
@@ -91,7 +93,8 @@ public class Program{
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
                         Matriks M = Matriks.readMatriks(in);
-                        menu1.MatriksBalikanTerm(M);
+                        Matriks N = Matriks.readMatriks(in);
+                        menu1.MatriksBalikanTerm(MatriksAug.from(M, N));
                         in.close();}
 
                 }
@@ -112,7 +115,8 @@ public class Program{
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
                         Matriks M = Matriks.readMatriks(in);
-                        menu1.KaidahCramerTerm(M);
+                        Matriks N = Matriks.readMatriks(in);
+                        menu1.KaidahCramerTerm(MatriksAug.from(M, N));
                         in.close();}
                 }
             }
@@ -280,7 +284,11 @@ public class Program{
                     if (inp == 1){ // 1. File
 
                     }
-                    else{} // 2. Terminal
+                    else{ // 2. Terminal
+                        in = new Scanner(System.in);
+                        
+                        in.close();
+                    }
 
             }
 

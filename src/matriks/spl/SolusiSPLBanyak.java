@@ -1,8 +1,8 @@
 package matriks.spl;
 
 import matriks.*;
+import matriks.util.*;
 import static matriks.util.Constants.*;
-import static matriks.util.Format.*;
 
 public class SolusiSPLBanyak extends SolusiSPL{
     protected int numVarBebas;
@@ -18,16 +18,26 @@ public class SolusiSPLBanyak extends SolusiSPL{
         // agar persamaan hanya dinyatakan dalam parameter-parameternya
         mat.toReducedRowEchelon();
 
-        for(int i = 0; i < mat.BARIS(); i++){
-            int bar = 0, toSwap = IDX_UNDEF;
-            while(toSwap == IDX_UNDEF && bar < mat.BARIS()){
-                if(mat.LEFT().idxLead(bar) == i)toSwap = bar;
-                bar++;
+        // Variabel bebas dalam SPL adalah variabel yang tidak memiliki baris dengan leading 1 bersesuaian
+        numVarBebas = mat.LEFT().KOLOM();
+        boolean[] isVarIkat = new boolean[mat.LEFT().KOLOM()];
+        for(int row = 0; row < mat.BARIS(); row++){
+            int col = mat.idxLead(row);
+            if(mat.kolValid(col)){
+                isVarIkat[col] = true;
+                numVarBebas--;
             }
-            if(toSwap != IDX_UNDEF)mat.swapBaris(i, toSwap);
         }
 
+        // Inisialisasi matriks buffer
+        coef = new Matriks(mat.LEFT().KOLOM(), numVarBebas);
+        konst = mat.RIGHT();
+
+        // Isi matriks buffer dengan koef untuk variabel bebas
+
+
         // Variabel bebas adalah [x_a, x_b, ...] di mana a,b,... adalah indeks kolom nol
+        /*
         numVarBebas = 0;
         boolean[] isVarBebas = new boolean[mat.IDXMID()];
         for(int i = 0; i < mat.LEFT().KOLOM(); i++){
@@ -63,7 +73,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
                 for(int k = 0; k < kolVarBebas.length; k++){
                     coef.set(i,j, mat.LEFT().get(i, kolVarBebas[j]));
                 }
-            }*/
+            }
             if(j != IDX_UNDEF){
                 for(int k = 0; k < kolVarBebas.length; k++){
                     coef.set(j,k, mat.LEFT().get(i, kolVarBebas[k]));
@@ -73,7 +83,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
         int iVarBebas = 0;
         for(int i = 0; i < kolVarBebas.length; i++){
             coef.set(kolVarBebas[i], iVarBebas++, -1f);
-        }
+        }*/
 
         /*
         // Hitung banyak variabel bebas, inisialisasi matriks buffer
@@ -121,7 +131,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
             // Print konstanta
             float r = konst.get(i,0);
             if(r != 0){
-                str.append(floatFMT(r));
+                str.append(Format.floatFMT(r));
                 numTerm++;
             }
             for(int j = 0; j < coef.KOLOM(); j++){
@@ -135,7 +145,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
                         str.append(" " + sgn + " ");
                     }
                     c *= c < 0f ? -1f : 1f;
-                    if(c != 1f)str.append(floatFMT(c));
+                    if(c != 1f)str.append(Format.floatFMT(c));
 
                     // Print nama parameter
                     char v = Character.toChars(Character.valueOf('a')+j)[0];
