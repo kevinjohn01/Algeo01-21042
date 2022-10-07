@@ -9,15 +9,18 @@ public class Program{
         boolean exit = false;
         Scanner input_menu = new Scanner(System.in);
         Scanner f,in;
+        int inp;
+        String file;
 
-        while(!exit){
+        //while(!exit){
             // menu utama
             System.out.println("MENU\n1. Sistem Persamaan Linier\n2. Determinan\n3. Matriks Balikan\n4. Interpolasi Polinom\n5. Interpolasi Bicubic\n6. Regresi Linier Berganda\n7. Keluar");
             
             // input menu
             System.out.print("Masukkan pilihan menu: ");
             
-            int inp = Integer.parseInt(input_menu.nextLine());
+            input_menu = new Scanner(System.in);
+            inp = Integer.parseInt(input_menu.nextLine());
             while (!(inp == 1 || inp == 2 || inp == 3 || inp == 4 || inp == 5 || inp == 6 || inp == 7)){
                 System.out.print("Masukkan pilihan menu: ");
                 inp = Integer.parseInt(input_menu.nextLine());
@@ -263,7 +266,9 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu5.BicubicFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
@@ -297,7 +302,7 @@ public class Program{
             }
 
             
-        }
+        //}
 
         input_menu.close();
 

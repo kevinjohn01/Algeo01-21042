@@ -31,10 +31,10 @@ public class menu5 {
         Scanner inputxy = new Scanner(System.in);
 
         String[] xy = inputxy.nextLine().split("\\s+");
-        int[] numxy = new int[2];
+        float[] numxy = new float[2];
 
         for(int i = 0; i < 2; i++){
-            numxy[i] = Integer.parseInt(xy[i]);
+            numxy[i] = Float.parseFloat(xy[i]);
         }
         inputxy.close();
 
