@@ -19,7 +19,7 @@ public class Program{
             // input menu
             System.out.print("Masukkan pilihan menu: ");
             
-            input_menu = new Scanner(System.in);
+            //input_menu = new Scanner(System.in);
             inp = Integer.parseInt(input_menu.nextLine());
             while (!(inp == 1 || inp == 2 || inp == 3 || inp == 4 || inp == 5 || inp == 6 || inp == 7)){
                 System.out.print("Masukkan pilihan menu: ");

@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import matriks.*;
 import matriks.spl.SolusiSPL;
+import matriks.spl.SolusiSPLBanyak;
+import matriks.util.Format;
 
 public class SPLTest{
     public static void main(String[] args){
@@ -14,8 +16,10 @@ public class SPLTest{
         MatriksAug M = MatriksAug.from(A, B);
         if(M != null){
             System.out.println(M.toString() + "\n");
-            System.out.println(M.copy().elimGauss() + "\n");
-            System.out.println(M.copy().elimGaussJordan() + "\n");
+            SolusiSPL sol = M.copy().elimGauss();
+            System.out.println(sol.toString() + "\n");
+            sol = M.copy().elimGaussJordan();
+            System.out.println(sol.toString() + "\n");
             /*SolusiSPL sol = M.elimGauss();
             System.out.println(sol.toString());*/
         }else{

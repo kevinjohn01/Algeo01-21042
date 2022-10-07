@@ -167,15 +167,15 @@ public class MatriksAug implements IMatriks{
         // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
         boolean inc = inkonsisten();
         if(inc){
-            return new SolusiSPLNul(BARIS());
+            return new SolusiSPLNul(LEFT().KOLOM());
         }
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         if(!solUnik()){
-            return new SolusiSPLBanyak(BARIS(), this);
+            return new SolusiSPLBanyak(LEFT().KOLOM(), this);
         }
         // Selain itu SPL memiliki solusi unik
-        SolusiSPLUnik solusi = new SolusiSPLUnik(BARIS());
-        for(int i = BARIS()-1; i >= 0; i--){
+        SolusiSPLUnik solusi = new SolusiSPLUnik(LEFT().KOLOM());
+        for(int i = LEFT().KOLOM()-1; i >= 0; i--){
             // Lakukan substitusi balik mulai dari baris terbawah
             float val = get(i,IDXMID());
             for(int j = i+1; j < IDXMID(); j++){
@@ -196,15 +196,15 @@ public class MatriksAug implements IMatriks{
         // Jika ada baris inkonsisten, maka SPL tidak memiliki solusi
         boolean inc = inkonsisten();
         if(inc){
-            return new SolusiSPLNul(BARIS());
+            return new SolusiSPLNul(LEFT().KOLOM());
         }
         // Jika ada baris nol, maka SPL memiliki solusi banyak
         if(!solUnik()){
-            return new SolusiSPLBanyak(BARIS(), this);
+            return new SolusiSPLBanyak(LEFT().KOLOM(), this);
         }
         // Selain itu SPL memiliki solusi unik
-        SolusiSPLUnik solusi = new SolusiSPLUnik(BARIS());
-        for(int i = 0; i < BARIS(); i++){
+        SolusiSPLUnik solusi = new SolusiSPLUnik(LEFT().KOLOM());
+        for(int i = 0; i < LEFT().KOLOM(); i++){
             solusi.set(i, get(i,IDXMID()));
         }
         return solusi;

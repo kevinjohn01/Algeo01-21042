@@ -374,8 +374,9 @@ public class Matriks implements IMatriks{
 
     public static Matriks readMatriks(Scanner inputln){
         // input size
+        System.out.print("Ukuran matriks (format \"a b\"): ");
         String line = inputln.nextLine();
-        String[] line_arr = line.split("\\s+");
+        String[] line_arr = line.trim().split("\\s+");
         int SIZE_bar = Integer.parseInt(line_arr[0]);
         int SIZE_col = Integer.parseInt(line_arr[1]);
 
@@ -385,8 +386,29 @@ public class Matriks implements IMatriks{
         // input nilai matriks
         for(int i = 0; i < SIZE_bar; i++){
             line = inputln.nextLine();
-            line_arr = line.split("\\s+");
+            line_arr = line.trim().split("\\s+");
             for(int j = 0; j < SIZE_col; j++){
+                m.set(i,j, Float.parseFloat(line_arr[j]));
+            }
+        }
+        return m;
+    }
+
+    public static Matriks readMatriksSquare(Scanner inputln){
+        // input size
+        System.out.print("Ukuran matriks: ");
+        String line = inputln.nextLine().trim();
+        String line_arr[];
+        int SIZE_n = Integer.parseInt(line);
+
+        // inisialisasi matriks
+        Matriks m = new Matriks(SIZE_n);
+
+        // input nilai matriks
+        for(int i = 0; i < SIZE_n; i++){
+            line = inputln.nextLine();
+            line_arr = line.trim().split("\\s+");
+            for(int j = 0; j < SIZE_n; j++){
                 m.set(i,j, Float.parseFloat(line_arr[j]));
             }
         }
@@ -402,7 +424,7 @@ public class Matriks implements IMatriks{
             Scanner line = new Scanner (f);
 
             // hitung kolom dengan baca baris pertama, baris = kolom - 1
-            String[] dataln = line.nextLine().split("\\s+");
+            String[] dataln = line.nextLine().trim().split("\\s+");
             kol = dataln.length;
             bar = kol - 1;
             M = new Matriks(bar,kol);
@@ -415,7 +437,7 @@ public class Matriks implements IMatriks{
             // baca file, pindahkan ke matriks
             int i = 1;
             while(line.hasNextLine()){
-                dataln = line.nextLine().split("\\s+");
+                dataln = line.nextLine().trim().split("\\s+");
                 for (int j = 0; j < kol; j++){
                     M.set(i,j,Float.parseFloat(dataln[j]));
                 }

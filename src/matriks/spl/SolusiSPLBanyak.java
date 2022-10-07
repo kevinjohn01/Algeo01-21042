@@ -6,7 +6,7 @@ import static matriks.util.Constants.*;
 
 public class SolusiSPLBanyak extends SolusiSPL{
     protected int numVarBebas;
-    protected Matriks coef, konst;
+    protected Matriks coef, inp;//, konst;
 
     public SolusiSPLBanyak(int size, MatriksAug mat){
         super(size);
@@ -17,6 +17,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
         // Reduksi matriks hingga mencapai bentuk reduced row echelon
         // agar persamaan hanya dinyatakan dalam parameter-parameternya
         mat.toReducedRowEchelon();
+        //System.out.println(mat.toString() + '\n');
 
         // Variabel bebas dalam SPL adalah variabel yang tidak memiliki baris dengan leading 1 bersesuaian
         numVarBebas = mat.LEFT().KOLOM();
@@ -30,11 +31,41 @@ public class SolusiSPLBanyak extends SolusiSPL{
         }
 
         // Inisialisasi matriks buffer
-        coef = new Matriks(mat.LEFT().KOLOM(), numVarBebas);
-        konst = mat.RIGHT();
+        coef = new Matriks(mat.LEFT().KOLOM(), numVarBebas+1);
+        inp = new Matriks(numVarBebas+1, 1);
+        inp.set(0,0, 1f);
+        int idxVarBebas[] = new int[numVarBebas];
+        int idx = 0;
+        for(int i = 0; i < isVarIkat.length; i++){
+            if(!isVarIkat[i]){
+                idxVarBebas[idx] = i;
+                idx++;
+            }
+        }
+        //konst = mat.RIGHT();
 
         // Isi matriks buffer dengan koef untuk variabel bebas
-
+        int idxFree = 1;
+        for(int i = 0; i < coef.BARIS(); i++){
+            if(isVarIkat[i])continue;
+            coef.set(i,idxFree, 1f);
+            idxFree++;
+        }
+        
+        // Isi matriks buffer dengan koef dan konstanta untuk variabel terikat
+        for(int row = 0; row < mat.BARIS(); row++){
+            int col = mat.idxLead(row);
+            if(mat.kolValid(col)){
+                // Simpan konstanta
+                coef.set(col,0, mat.get(row, mat.IDXMID()));
+                // Simpan koef variabel bebas
+                for(int nVar = 0; nVar < idxVarBebas.length; nVar++){
+                    float val = mat.get(row, idxVarBebas[nVar]);
+                    if(!Mathf.zero(val))coef.set(col,nVar+1, -val);
+                }
+            }
+        }
+        //System.out.println(coef.toString());
 
         // Variabel bebas adalah [x_a, x_b, ...] di mana a,b,... adalah indeks kolom nol
         /*
@@ -109,11 +140,11 @@ public class SolusiSPLBanyak extends SolusiSPL{
     public float get(int i, float... arg){
         // Tidak menghitung jika input tidak sesuai
         if(i<0 || size<=i || arg.length != numVarBebas)return Float.NaN;
-        float res = konst.get(i,0);
-        for(int j = 0; j < coef.KOLOM(); j++){
-            res -= coef.get(i,j) * arg[j];
+        float x = coef.get(i,0);
+        for(int j = 1; j < coef.KOLOM(); j++){
+            x += coef.get(i,j) * arg[j-1];
         }
-        return res;
+        return x;
     }
 
     public int numVarBebas(){
@@ -129,13 +160,13 @@ public class SolusiSPLBanyak extends SolusiSPL{
             str.append(String.format("x%s = ", i+1));
             int numTerm = 0;
             // Print konstanta
-            float r = konst.get(i,0);
+            float r = coef.get(i,0);
             if(r != 0){
                 str.append(Format.floatFMT(r));
                 numTerm++;
             }
-            for(int j = 0; j < coef.KOLOM(); j++){
-                float c = -coef.get(i,j);
+            for(int j = 1; j < coef.KOLOM(); j++){
+                float c = coef.get(i,j);
                 if(c != 0){
                     // Print c dan tanda
                     char sgn = c < 0f ? '-' : '+';
@@ -148,7 +179,7 @@ public class SolusiSPLBanyak extends SolusiSPL{
                     if(c != 1f)str.append(Format.floatFMT(c));
 
                     // Print nama parameter
-                    char v = Character.toChars(Character.valueOf('a')+j)[0];
+                    char v = Character.toChars(Character.valueOf('a')+j-1)[0];
                     str.append(v);
 
                     numTerm++;
