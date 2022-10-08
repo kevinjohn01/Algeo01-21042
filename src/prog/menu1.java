@@ -9,11 +9,24 @@ public class menu1 {
     // 1. Metode Eliminasi Gauss
     // 1.1. File
     public static void ElimGaussFile(String filename){
-        /*
-        Matriks M = Matriks.readMatriksFile(filename);
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-        */
+        Matriks M = Matriks.readMatriksFile("test\\" + filename);
+        Matriks MA = new Matriks(M.BARIS(), M.KOLOM()-1);
+        Matriks Mb = new Matriks(M.BARIS(), 1);
+
+        for (int i = 0; i < M.BARIS(); i++){
+            for (int j = 0; j < M.KOLOM(); j++){
+                 if (j == M.KOLOM()-1){
+                    Mb.set(i,1,M.get(i,j));
+                 }
+                 else{
+                    MA.set(i,j,M.get(i,j));
+                 }
+            }
+        }
+
+        MatriksAug Mn = MatriksAug.from(MA,Mb);
+        SolusiSPL sol = Mn.elimGauss();
+        System.out.println(sol.toString());
     }
     // 1.2. Terminal
     public static void ElimGaussTerm(MatriksAug M){
@@ -24,11 +37,24 @@ public class menu1 {
     // 2. Metode Eliminasi Gauss-Jordan
     // 2.1. File
     public static void ElimGaussJordanFile(String filename){
-        /*
-        Matriks M = Matriks.readMatriksFile(filename);
-        SolusiSPL sol = M.elimGauss();
-        sol.toString();
-        */
+        Matriks M = Matriks.readMatriksFile("test\\" + filename);
+        Matriks MA = new Matriks(M.BARIS(), M.KOLOM()-1);
+        Matriks Mb = new Matriks(M.BARIS(), 1);
+
+        for (int i = 0; i < M.BARIS(); i++){
+            for (int j = 0; j < M.KOLOM(); j++){
+                 if (j == M.KOLOM()-1){
+                    Mb.set(i,1,M.get(i,j));
+                 }
+                 else{
+                    MA.set(i,j,M.get(i,j));
+                 }
+            }
+        }
+
+        MatriksAug Mn = MatriksAug.from(MA,Mb);
+        SolusiSPL sol = Mn.elimGaussJordan();
+        System.out.println(sol.toString());
     }
     // 2.2. Terminal
     public static void ElimGaussJordanTerm(MatriksAug M){
@@ -39,9 +65,24 @@ public class menu1 {
     // 3. Metode Matriks Balikan
     // 3.1 File
     public static void MatriksBalikanFile(String filename){
-        /*
-         
-         */
+        Matriks M = Matriks.readMatriksFile("test\\" + filename);
+        Matriks MA = new Matriks(M.BARIS(), M.KOLOM()-1);
+        Matriks Mb = new Matriks(M.BARIS(), 1);
+
+        for (int i = 0; i < M.BARIS(); i++){
+            for (int j = 0; j < M.KOLOM(); j++){
+                 if (j == M.KOLOM()-1){
+                    Mb.set(i,1,M.get(i,j));
+                 }
+                 else{
+                    MA.set(i,j,M.get(i,j));
+                 }
+            }
+        }
+
+        MatriksAug Mn = MatriksAug.from(MA,Mb);
+        SolusiSPL sol = Mn.solveInverse();
+        System.out.println(sol.toString());
     }
     // 3.2 Terminal
     public static void MatriksBalikanTerm(MatriksAug M){
@@ -52,9 +93,24 @@ public class menu1 {
     // 4. Kaidah Cramer
     // 4.1 File
     public static void KaidahCramerFile(String filename){
-        /*
-         
-         */
+        Matriks M = Matriks.readMatriksFile("test\\" + filename);
+        Matriks MA = new Matriks(M.BARIS(), M.KOLOM()-1);
+        Matriks Mb = new Matriks(M.BARIS(), 1);
+
+        for (int i = 0; i < M.BARIS(); i++){
+            for (int j = 0; j < M.KOLOM(); j++){
+                 if (j == M.KOLOM()-1){
+                    Mb.set(i,1,M.get(i,j));
+                 }
+                 else{
+                    MA.set(i,j,M.get(i,j));
+                 }
+            }
+        }
+
+        MatriksAug Mn = MatriksAug.from(MA,Mb);
+        SolusiSPL sol = Cramer.cramerAug(Mn);
+        System.out.println(sol.toString());
     }
     // 4.2 Terminal
     public static void KaidahCramerTerm(MatriksAug M){

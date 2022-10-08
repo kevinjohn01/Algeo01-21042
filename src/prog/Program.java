@@ -43,16 +43,17 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu1.ElimGaussFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu2.ReduksiBarisFile(file);
+                        menu1.ElimGaussFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Ax = b");
                         System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
-                        System.out.println("Input matriks B: ");
+                        System.out.println("Input matriks b: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.ElimGaussTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -67,16 +68,17 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu1.ElimGaussJordanFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu2.ReduksiBarisFile(file);
+                        menu1.ElimGaussJordanFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Ax = b");
                         System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
-                        System.out.println("Input matriks B: ");
+                        System.out.println("Input matriks b: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.ElimGaussJordanTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -92,16 +94,17 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu1.MatriksBalikanFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu2.ReduksiBarisFile(file);
+                        menu1.MatriksBalikanFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Ax = b");
                         System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
-                        System.out.println("Input matriks B: ");
+                        System.out.println("Input matriks b: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.MatriksBalikanTerm(MatriksAug.from(M, N));
                         in.close();}
@@ -116,16 +119,17 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu1.KaidahCramerFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu2.ReduksiBarisFile(file);
+                        menu1.KaidahCramerFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
+                        System.out.println("Ax = b");
                         System.out.println("Input matriks A: ");
                         Matriks M = Matriks.readMatriks(in);
-                        System.out.println("Input matriks B: ");
+                        System.out.println("Input matriks b: ");
                         Matriks N = Matriks.readMatriks(in);
                         menu1.KaidahCramerTerm(MatriksAug.from(M, N));
                         in.close();}
