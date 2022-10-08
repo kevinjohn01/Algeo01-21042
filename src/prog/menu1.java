@@ -16,7 +16,7 @@ public class menu1 {
         for (int i = 0; i < M.BARIS(); i++){
             for (int j = 0; j < M.KOLOM(); j++){
                  if (j == M.KOLOM()-1){
-                    Mb.set(i,1,M.get(i,j));
+                    Mb.set(i,0,M.get(i,j));
                  }
                  else{
                     MA.set(i,j,M.get(i,j));
@@ -44,7 +44,7 @@ public class menu1 {
         for (int i = 0; i < M.BARIS(); i++){
             for (int j = 0; j < M.KOLOM(); j++){
                  if (j == M.KOLOM()-1){
-                    Mb.set(i,1,M.get(i,j));
+                    Mb.set(i,0,M.get(i,j));
                  }
                  else{
                     MA.set(i,j,M.get(i,j));
@@ -72,7 +72,7 @@ public class menu1 {
         for (int i = 0; i < M.BARIS(); i++){
             for (int j = 0; j < M.KOLOM(); j++){
                  if (j == M.KOLOM()-1){
-                    Mb.set(i,1,M.get(i,j));
+                    Mb.set(i,0,M.get(i,j));
                  }
                  else{
                     MA.set(i,j,M.get(i,j));
@@ -100,7 +100,7 @@ public class menu1 {
         for (int i = 0; i < M.BARIS(); i++){
             for (int j = 0; j < M.KOLOM(); j++){
                  if (j == M.KOLOM()-1){
-                    Mb.set(i,1,M.get(i,j));
+                    Mb.set(i,0,M.get(i,j));
                  }
                  else{
                     MA.set(i,j,M.get(i,j));
