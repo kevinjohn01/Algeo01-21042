@@ -310,7 +310,7 @@ public class Program{
                     if (inp == 1){ // 1. File
                         System.out.print("Masukkan nama file: ");
                         file = input_menu.nextLine();
-                        RegresiLinearBerganda.MultLinearRegressionFile("test\\" + file);
+                        menu6.RegresiFile("test\\" + file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
@@ -338,7 +338,7 @@ public class Program{
                         float UJI[] = new float[inpStr.length];
                         for(int i = 0; i < UJI.length; i++)UJI[i] = Float.parseFloat(inpStr[i]);
                         /// Proses
-                        RegresiLinearBerganda.MultLinearRegression(EXPL, RESP, UJI);
+                        menu6.Regresi(EXPL, RESP, UJI);
                         in.close();
                     }
 

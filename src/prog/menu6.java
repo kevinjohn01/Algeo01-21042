@@ -1,49 +1,16 @@
-package matriks;
+package prog;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
+import matriks.*;
 import matriks.spl.*;
 
-public class RegresiLinearBerganda{
-    public static SolusiSPL MultLinearRegression(Matriks EXPL, Matriks RESP, float[] UJI){
-        int M = EXPL.BARIS();
-        int N = EXPL.KOLOM();
-
-        Matriks A = new Matriks(N+1, N+1);
-        Matriks B = new Matriks(N+1, 1);
-
-        for(int row = 0; row < A.BARIS(); row++){
-            for(int col = 0; col < A.KOLOM(); col++){
-                if(row == 0 && col == 0){
-                    A.set(row,col, M);
-                    continue;
-                }
-                float sum = 0f;
-                for(int i = 0; i < M; i++){
-                    float term = 1f;
-                    if(row > 0)term *= EXPL.get(i, row-1);
-                    if(col > 0)term *= EXPL.get(i, col-1);
-                    sum += term;
-                }
-                A.set(row,col, sum);
-            }
-        }
-        for(int row = 0; row < B.BARIS(); row++){
-            float sum = 0f;
-            for(int i = 0; i < M; i++){
-                float term = RESP.get(i,0);
-                if(row > 0)term *= EXPL.get(i,row-1);
-                sum += term;
-            }
-            B.set(row,0, sum);
-        }
-
-        MatriksAug X = MatriksAug.from(A, B);
-        SolusiSPL sol = X.elimGaussJordan();
-        return sol;
-        /*if(sol instanceof SolusiSPLUnik){
+public class menu6{
+    public static void Regresi(Matriks EXPL, Matriks RESP, float[] UJI){
+        SolusiSPL sol = RegresiLinearBerganda.MultLinearRegression(EXPL, RESP, UJI);
+        if(sol instanceof SolusiSPLUnik){
             /// Solusi
-            Matriks res = new Matriks(1, N+1);
+            Matriks res = new Matriks(1, EXPL.KOLOM()+1);
             for(int i = 0; i < sol.numVariable(); i++){
                 res.set(0,i, sol.get(i));
             }
@@ -72,10 +39,10 @@ public class RegresiLinearBerganda{
                 }
                 System.out.format("Nilai taksiran dengan titik %s: %f%n", Arrays.toString(UJI), res.product(R).get(0,0));
             }
-        }*/
+        }
     }
 
-    /*public static void MultLinearRegressionFile(String filename){
+    public static void RegresiFile(String filename){
         /// Baca matriks dari file
         Matriks EXPL, RESP;
         float UJI[] = null;
@@ -118,11 +85,11 @@ public class RegresiLinearBerganda{
                     }
                 }
                 scan.close();
-                MultLinearRegression(EXPL, RESP, UJI);
+                Regresi(EXPL, RESP, UJI);
             }
         }catch(FileNotFoundException e){
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-    }*/
+    }
 }
