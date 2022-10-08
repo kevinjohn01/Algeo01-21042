@@ -249,13 +249,17 @@ public class Program{
                 if (inp == 1){ // 1. File
                     System.out.print("Masukkan nama file: ");
                         file = input_menu.nextLine();
-                        menu4.IntPolFile(file);
+                        System.out.println("Nilai X: ");
+                        float X = Float.parseFloat(input_menu.nextLine());
+                        menu4.IntPolFile(file, X);
                 }
                 else{// 2. Terminal
                     in = new Scanner(System.in);
                         System.out.println("Input matriks: ");
                         Matriks M = Matriks.readMatriks(in);
-                        menu4.IntPolTerm(M);
+                        System.out.println("Nilai X: ");
+                        float X = Float.parseFloat(in.nextLine());
+                        menu4.IntPolTerm(M, X);
                 } 
                     // pilih submenu
                     /*
