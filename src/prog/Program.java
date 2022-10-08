@@ -249,8 +249,11 @@ public class Program{
                 if (inp == 1){ // 1. File
 
                 }
-                else{} // 2. Terminal
+                else{// 2. Terminal
+
+                } 
                     // pilih submenu
+                    /*
                     System.out.println("1. Test Case 1\n2. Test Case 2\n3. Test Case 3");
                     inp = Integer.parseInt(input_menu.nextLine());
                     while(!(inp == 1 || inp == 2 || inp == 3)){
@@ -267,7 +270,7 @@ public class Program{
                     else if (inp == 3){ // 2. Test Case 3
                         intPolinom.simplification();
                     }                                
-
+                    */
             }
 
             else if (inp == 5){ // 5. Interpolasi Bicubic
