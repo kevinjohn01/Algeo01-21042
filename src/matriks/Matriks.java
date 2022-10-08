@@ -417,6 +417,45 @@ public class Matriks implements IMatriks{
 
     public static Matriks readMatriksFile(String filename){
         Matriks M = null;
+        int kol,bar;
+        bar = 1;
+        kol = 0;
+        try {
+            File file = new File(filename);
+            Scanner data = new Scanner(file);
+
+            String[] kolom = data.nextLine().trim().split("\\s+");
+            kol = kolom.length;
+            while (data.hasNextLine()) {
+              bar++;
+              data.nextLine();
+            }
+            data.close();
+
+
+            M = new Matriks(bar,kol);
+
+            file = new File(filename);
+            data = new Scanner(file);
+
+            String[] arr;
+            for (int i = 0; i < bar; i++){
+                arr = data.nextLine().trim().split("\\s+");
+                for(int j = 0; j < kol; j++){
+                    M.set(i,j,Float.parseFloat(arr[j]));
+                }
+            }
+            data.close();
+
+          } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+
+        return M;
+
+        /*
+        Matriks M = null;
         try{
             int bar,kol;
             // baca file
@@ -450,7 +489,7 @@ public class Matriks implements IMatriks{
             e.printStackTrace();
           }
 
-        return M;
+        return M;*/
     }
 
     /* *** TAMPILAN *** */

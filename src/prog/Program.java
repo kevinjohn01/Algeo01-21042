@@ -203,10 +203,9 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu3.ReduksiBarisFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu3.ReduksiBarisFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
@@ -224,10 +223,9 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu3.AdjoinFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu3.AdjoinFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
@@ -247,10 +245,15 @@ public class Program{
                     inp = Integer.parseInt(input_menu.nextLine());
                 }
                 if (inp == 1){ // 1. File
-
+                    System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu4.IntPolFile(file);
                 }
                 else{// 2. Terminal
-
+                    in = new Scanner(System.in);
+                        System.out.println("Input matriks: ");
+                        Matriks M = Matriks.readMatriks(in);
+                        menu4.IntPolTerm(M);
                 } 
                     // pilih submenu
                     /*
