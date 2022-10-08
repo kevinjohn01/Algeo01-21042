@@ -149,10 +149,9 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu2.ReduksiBarisFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu2.ReduksiBarisFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
@@ -171,10 +170,9 @@ public class Program{
                         inp = Integer.parseInt(input_menu.nextLine());
                     }
                     if (inp == 1){ // 1. File
-                        f = new Scanner(System.in);
-                        String filename = f.nextLine();
-                        menu2.EkspansiFile(filename);
-                        f.close();
+                        System.out.print("Masukkan nama file: ");
+                        file = input_menu.nextLine();
+                        menu2.EkspansiFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
