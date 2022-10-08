@@ -93,7 +93,7 @@ public class InterpolasiPolinom {
             System.out.print(" ");
             pangkat --;
         }
-        System.out.print(k.get(0)); //konstanta
+        System.out.println(k.get(0)); //konstanta
     }
 
     public static float nilaifungsi(SolusiSPL k, float n){

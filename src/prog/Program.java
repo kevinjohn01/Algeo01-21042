@@ -249,7 +249,7 @@ public class Program{
                 if (inp == 1){ // 1. File
                     System.out.print("Masukkan nama file: ");
                         file = input_menu.nextLine();
-                        System.out.println("Nilai X: ");
+                        System.out.print("Nilai X: ");
                         float X = Float.parseFloat(input_menu.nextLine());
                         menu4.IntPolFile(file, X);
                 }
@@ -257,7 +257,7 @@ public class Program{
                     in = new Scanner(System.in);
                         System.out.println("Input matriks: ");
                         Matriks M = Matriks.readMatriks(in);
-                        System.out.println("Nilai X: ");
+                        System.out.print("Nilai X: ");
                         float X = Float.parseFloat(in.nextLine());
                         menu4.IntPolTerm(M, X);
                 } 
