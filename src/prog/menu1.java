@@ -24,12 +24,6 @@ public class menu1 {
             }
         }
 
-        for (int i = 0; i < M.BARIS(); i++){
-            for (int j = 0; j < M.KOLOM(); j++){
-                System.out.print(MA.get(i,j) + " ");
-            }
-            System.out.println();
-        }
         MatriksAug Mn = MatriksAug.from(MA,Mb);
         SolusiSPL sol = Mn.elimGauss();
         System.out.println(sol.toString());
@@ -56,13 +50,6 @@ public class menu1 {
                     MA.set(i,j,M.get(i,j));
                  }
             }
-        }
-
-        for (int i = 0; i < MA.BARIS(); i++){
-            for (int j = 0; j < MA.KOLOM(); j++){
-                System.out.print(MA.get(i,j) + " ");
-            }
-            System.out.println();
         }
 
         MatriksAug Mn = MatriksAug.from(MA,Mb);
