@@ -310,7 +310,7 @@ public class Program{
                     if (inp == 1){ // 1. File
                         System.out.print("Masukkan nama file: ");
                         file = input_menu.nextLine();
-                        RegresiLinearBerganda.MultLinearRegressionFile(file);
+                        RegresiLinearBerganda.MultLinearRegressionFile("test\\" + file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
