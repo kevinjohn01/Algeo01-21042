@@ -76,9 +76,10 @@ public class RegresiLinearBerganda{
         }
     }
 
-    public static void MultLinearRegressionFile(String filename, float[] UJI){
+    public static void MultLinearRegressionFile(String filename){
         /// Baca matriks dari file
         Matriks EXPL, RESP;
+        float UJI[] = null;
 
         /// Hitung banyak titik sampel
         int M = 0, N = 0;
@@ -88,8 +89,10 @@ public class RegresiLinearBerganda{
 
             while(scan.hasNextLine()){
                 String s = scan.nextLine();
-                M++;
-                if(N == 0)N = s.trim().split("\\s+").length-1;
+                if(scan.hasNextLine()){
+                    M++;
+                    if(N == 0)N = s.trim().split("\\s+").length-1;
+                }
             }
             scan.close();
 
@@ -101,13 +104,19 @@ public class RegresiLinearBerganda{
                 int sampel = 0;
                 while(scan.hasNextLine()){
                     String inpStr[] = scan.nextLine().trim().split("\\s+");
-                    /// Input titik sampel: nilai eksplanatorial
-                    for(int var = 0; var < N; var++){
-                        EXPL.set(sampel, var, Float.parseFloat(inpStr[var+1]));
+                    /// Baris terakhir adalah titik uji
+                    if(!scan.hasNextLine()){
+                        UJI = new float[inpStr.length];
+                        for(int i = 0; i < UJI.length; i++)UJI[i] = Float.parseFloat(inpStr[i]);
+                    }else{
+                        /// Input titik sampel: nilai eksplanatorial
+                        for(int var = 0; var < N; var++){
+                            EXPL.set(sampel, var, Float.parseFloat(inpStr[var+1]));
+                        }
+                        /// Input titik sampel: nilai respons/observasi
+                        RESP.set(sampel, 0, Float.parseFloat(inpStr[0]));
+                        sampel++;
                     }
-                    /// Input titik sampel: nilai respons/observasi
-                    RESP.set(sampel, 0, Float.parseFloat(inpStr[0]));
-                    sampel++;
                 }
                 scan.close();
                 MultLinearRegression(EXPL, RESP, UJI);

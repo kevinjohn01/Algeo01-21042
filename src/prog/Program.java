@@ -310,14 +310,7 @@ public class Program{
                     if (inp == 1){ // 1. File
                         System.out.print("Masukkan nama file: ");
                         file = input_menu.nextLine();
-                        /// Input nilai-nilai tes x_k
-                        in = new Scanner(System.in);
-                        System.out.print("Nilai X uji (format \"x1 x2 ... xn\"): ");
-                        String inpStr[] = in.nextLine().trim().split("\\s+");
-                        float UJI[] = new float[inpStr.length];
-                        for(int i = 0; i < UJI.length; i++)UJI[i] = Float.parseFloat(inpStr[i]);
-                        RegresiLinearBerganda.MultLinearRegressionFile(file, UJI);
-                        in.close();
+                        RegresiLinearBerganda.MultLinearRegressionFile(file);
                     }
                     else{ // 2. Terminal
                         in = new Scanner(System.in);
